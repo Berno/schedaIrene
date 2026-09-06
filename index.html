@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1769e0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="BB Tracker">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Bodybuilding Tracker - 6 settimane</title>
+<style>
+:root{
+  --bg:#f5f6f8; --card:#fff; --line:#d9dde3; --text:#17191c; --muted:#667085;
+  --accent:#1769e0; --danger:#b42318; --ok:#067647; --soft:#eef4ff;
+}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{
+  margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  background:var(--bg);color:var(--text);
+  padding-bottom:env(safe-area-inset-bottom);
+}
+header{
+  position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--line);
+  padding-top:env(safe-area-inset-top);
+}
+.wrap{max-width:1100px;margin:0 auto;padding:14px 16px}
+h1{margin:0 0 10px;font-size:22px}
+.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:end}
+.field{display:flex;flex-direction:column;gap:4px}
+label{font-size:12px;color:var(--muted);font-weight:600}
+select,button,input,textarea{font:inherit}
+select,input,textarea{border:1px solid var(--line);border-radius:8px;background:#fff}
+select{padding:10px;min-width:145px}
+button{
+  border:1px solid var(--line);border-radius:8px;background:#fff;padding:10px 12px;
+  cursor:pointer;touch-action:manipulation;
+}
+button.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+button.danger{color:var(--danger)}
+.status{margin-left:auto;color:var(--ok);font-size:12px;padding-bottom:8px}
+.help{font-size:12px;color:var(--muted);margin-top:8px}
+.install-tip{margin-top:8px;padding:8px 10px;background:var(--soft);border-radius:8px;font-size:12px;color:#344054}
+.day-title{display:flex;justify-content:space-between;align-items:center;margin:18px 0 10px;gap:12px}
+.day-title h2{margin:0;font-size:20px}
+.week-note{font-size:12px;color:var(--muted)}
+.exercise{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:12px;overflow:hidden}
+.exercise-head{padding:12px 14px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px}
+.exercise-name{font-weight:700}
+.meta{font-size:12px;color:var(--muted);text-align:right}
+.sets{padding:10px 14px 12px}
+.grid{display:grid;grid-template-columns:48px 1fr 1fr 1fr;gap:7px;align-items:center}
+.grid .hdr{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase}
+.grid input{width:100%;padding:10px 9px}
+.notes{margin-top:10px}
+.notes textarea{width:100%;min-height:52px;padding:10px 9px;resize:vertical}
+.previous{margin:0 14px 12px;padding:8px 10px;border-radius:8px;background:var(--soft);font-size:12px;color:#344054}
+.previous strong{color:#1d2939}
+.footer-note{font-size:12px;color:var(--muted);margin:18px 0 36px}
+.modal-backdrop{
+  position:fixed;inset:0;background:rgba(0,0,0,.38);display:none;align-items:center;
+  justify-content:center;z-index:50;padding:16px;
+}
+.modal{
+  width:min(900px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:14px;
+  padding:16px;border:1px solid var(--line);
+}
+.modal h3{margin-top:0}
+.modal textarea{
+  width:100%;min-height:320px;padding:10px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px
+}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:10px;flex-wrap:wrap}
+.confirm-text{font-size:15px;line-height:1.45}
+@media(max-width:700px){
+  .wrap{padding:10px 10px 12px}
+  .controls{align-items:stretch}
+  .field{flex:1 1 140px}
+  .controls button{flex:1 1 calc(50% - 8px)}
+  .status{width:100%;margin-left:0;padding:0}
+  .exercise-head{display:block}
+  .meta{text-align:left;margin-top:4px}
+  .grid{grid-template-columns:36px 1fr 1fr 1fr;gap:5px}
+  .grid input{padding:10px 6px}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>Bodybuilding Tracker · 6 settimane</h1>
+    <div class="controls">
+      <div class="field">
+        <label for="weekSelect">Settimana</label>
+        <select id="weekSelect"></select>
+      </div>
+      <div class="field">
+        <label for="daySelect">Giorno</label>
+        <select id="daySelect">
+          <option value="A">Giorno A · Lower</option>
+          <option value="B">Giorno B · Upper</option>
+          <option value="C">Giorno C · Lower</option>
+          <option value="D">Giorno D · Upper</option>
+        </select>
+      </div>
+      <button id="exportJson" class="primary">Backup JSON</button>
+      <button id="exportCsv">CSV</button>
+      <button id="showSummary">Riepilogo ChatGPT</button>
+      <button id="importBtn">Importa backup</button>
+      <input id="importFile" type="file" accept=".json,application/json" hidden>
+      <button id="resetWeek" class="danger">Azzera settimana</button>
+      <span class="status" id="status">Pronto</span>
+    </div>
+    <div class="help">I dati vengono salvati automaticamente nel Local Storage di Safari.</div>
+    <div class="install-tip" id="installTip">Su iPhone: apri questa pagina in Safari → Condividi → Aggiungi alla schermata Home.</div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="day-title">
+    <div>
+      <h2 id="currentDayTitle"></h2>
+      <div class="week-note" id="weekNote"></div>
+    </div>
+  </div>
+  <div id="exerciseList"></div>
+  <div class="footer-note">
+    Per valutare i progressi puoi usare <b>Riepilogo ChatGPT</b>, oppure condividere/esportare il backup JSON o il CSV.
+  </div>
+</main>
+
+<div class="modal-backdrop" id="summaryModal">
+  <div class="modal">
+    <h3>Riepilogo progressi</h3>
+    <textarea id="summaryText" readonly></textarea>
+    <div class="modal-actions">
+      <button id="shareSummary">Condividi</button>
+      <button id="downloadSummary">Salva TXT</button>
+      <button id="copySummary" class="primary">Copia</button>
+      <button id="closeSummary">Chiudi</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="confirmModal">
+  <div class="modal" style="max-width:520px">
+    <h3>Conferma azzeramento</h3>
+    <div class="confirm-text" id="confirmText"></div>
+    <div class="modal-actions">
+      <button id="cancelReset">Annulla</button>
+      <button id="confirmReset" class="danger">Azzera</button>
+    </div>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+const PLAN = {
+  A: [
+    {exercise:"Hip Thrust", sets:4, reps:"6-8", rir:"2 / 2 / 2 / 1", rest:"2-3 min"},
+    {exercise:"Romanian Deadlift", sets:3, reps:"6-8", rir:"2", rest:"2-3 min"},
+    {exercise:"Leg Curl", sets:3, reps:"8-10", rir:"1-2", rest:"90-120 s"},
+    {exercise:"Back Extension 45° glute bias", sets:2, reps:"10-12", rir:"1-2", rest:"90-120 s"},
+    {exercise:"Slanci laterali ai cavi", sets:2, reps:"12-15", rir:"1", rest:"60-90 s"},
+    {exercise:"Adductor machine", sets:2, reps:"12-15", rir:"1", rest:"60-90 s"},
+    {exercise:"Core a scelta", sets:3, reps:"controllate", rir:"1-2", rest:"60-90 s"}
+  ],
+  B: [
+    {exercise:"Lat machine neutra/supina", sets:3, reps:"6-8", rir:"1-2", rest:"90-120 s"},
+    {exercise:"Chest-supported row / T-Bar supportata", sets:3, reps:"8-10", rir:"1-2", rest:"90-120 s"},
+    {exercise:"Pulley", sets:2, reps:"8-10", rir:"1-2", rest:"90-120 s"},
+    {exercise:"Shoulder Press manubri", sets:3, reps:"6-8", rir:"2", rest:"90-120 s"},
+    {exercise:"Alzate laterali", sets:3, reps:"10-12", rir:"1", rest:"60-90 s"},
+    {exercise:"Curl al cavo", sets:3, reps:"8-10", rir:"1", rest:"60-90 s"},
+    {exercise:"Pushdown", sets:3, reps:"8-10", rir:"1", rest:"60-90 s"}
+  ],
+  C: [
+    {exercise:"Squat", sets:3, reps:"6-8", rir:"2-3", rest:"2-3 min"},
+    {exercise:"Glute Bridge / Hip Thrust variante", sets:3, reps:"8-10", rir:"1-2", rest:"2 min"},
+    {exercise:"Bulgarian Split Squat glute bias", sets:2, reps:"8-10 / lato", rir:"2", rest:"90-120 s"},
+    {exercise:"Leg Curl", sets:2, reps:"10-12", rir:"1-2", rest:"90-120 s"},
+    {exercise:"Cable Kickback", sets:2, reps:"12-15", rir:"1", rest:"60-90 s"},
+    {exercise:"Abductor machine", sets:2, reps:"12-15", rir:"1", rest:"60-90 s"}
+  ],
+  D: [
+    {exercise:"Lat machine presa prona", sets:3, reps:"8-10", rir:"1-2", rest:"90-120 s"},
+    {exercise:"Upper Back machine", sets:3, reps:"8-10", rir:"1-2", rest:"90-120 s"},
+    {exercise:"Rematore con bilanciere", sets:3, reps:"8-10", rir:"2", rest:"2 min"},
+    {exercise:"Panca inclinata manubri", sets:3, reps:"8-10", rir:"1-2", rest:"90-120 s"},
+    {exercise:"Reverse Fly / rear delt cable", sets:3, reps:"12-15", rir:"1", rest:"60-90 s"},
+    {exercise:"Alzate laterali", sets:3, reps:"10-12", rir:"1", rest:"60-90 s"},
+    {exercise:"Pushdown Vulken", sets:3, reps:"8-10", rir:"1", rest:"60-90 s"}
+  ]
+};
+
+const STORAGE_KEY = "bodybuildingTrackerFemale6W_v1";
+const TOTAL_WEEKS = 6;
+const DAYS = ["A","B","C","D"];
+
+const weekSelect = document.getElementById("weekSelect");
+const daySelect = document.getElementById("daySelect");
+const exerciseList = document.getElementById("exerciseList");
+const currentDayTitle = document.getElementById("currentDayTitle");
+const weekNote = document.getElementById("weekNote");
+const statusEl = document.getElementById("status");
+const importFile = document.getElementById("importFile");
+
+const summaryModal = document.getElementById("summaryModal");
+const summaryText = document.getElementById("summaryText");
+const confirmModal = document.getElementById("confirmModal");
+const confirmText = document.getElementById("confirmText");
+
+let currentWeek = 1;
+let currentDay = "A";
+let store = loadStore();
+
+function emptyStore(){ return {version:1, updatedAt:null, weeks:{}}; }
+
+function loadStore(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return emptyStore();
+    const parsed = JSON.parse(raw);
+    if(!parsed || !parsed.weeks) return emptyStore();
+    return parsed;
+  }catch(err){
+    return emptyStore();
+  }
+}
+
+function saveStore(){
+  store.updatedAt = new Date().toISOString();
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
+  statusEl.textContent = "Salvato " + new Date().toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"});
+}
+
+function ensureWeek(week){
+  if(!store.weeks[week]) store.weeks[week] = {};
+  for(const d of DAYS){
+    if(!store.weeks[week][d]) store.weeks[week][d] = {};
+  }
+  return store.weeks[week];
+}
+
+function getExerciseData(week, day, exerciseIndex){
+  const w = ensureWeek(week);
+  if(!w[day][exerciseIndex]) w[day][exerciseIndex] = {sets:{}, note:""};
+  if(!w[day][exerciseIndex].sets) w[day][exerciseIndex].sets = {};
+  return w[day][exerciseIndex];
+}
+
+function populateWeeks(){
+  weekSelect.innerHTML = "";
+  for(let i=1;i<=TOTAL_WEEKS;i++){
+    const option = document.createElement("option");
+    option.value = String(i);
+    option.textContent = "Settimana " + i;
+    weekSelect.appendChild(option);
+  }
+  weekSelect.value = String(currentWeek);
+}
+
+function makeInput(value, placeholder, inputMode){
+  const input = document.createElement("input");
+  input.value = value ?? "";
+  input.placeholder = placeholder;
+  input.inputMode = inputMode;
+  return input;
+}
+
+function previousWeekSummary(exerciseIndex){
+  if(currentWeek <= 1) return "";
+  const prev = store.weeks[currentWeek - 1]?.[currentDay]?.[exerciseIndex];
+  if(!prev) return "";
+  const ex = PLAN[currentDay][exerciseIndex];
+  const parts = [];
+  for(let setIndex=0;setIndex<ex.sets;setIndex++){
+    const s = prev.sets?.[setIndex] || {};
+    if(s.weight || s.reps || s.rir){
+      parts.push(`S${setIndex+1}: ${s.weight || "?"}kg × ${s.reps || "?"} @RIR ${s.rir || "?"}`);
+    }
+  }
+  return parts.join(" · ");
+}
+
+function renderDay(){
+  currentDayTitle.textContent = "Giorno " + currentDay + " · Settimana " + currentWeek;
+  weekNote.textContent = currentWeek > 1 ? "Se presenti, vengono mostrati anche i dati della settimana precedente." : "Prima settimana del blocco.";
+  exerciseList.innerHTML = "";
+
+  PLAN[currentDay].forEach((exercise, exerciseIndex) => {
+    const saved = getExerciseData(currentWeek, currentDay, exerciseIndex);
+    const card = document.createElement("section");
+    card.className = "exercise";
+
+    const head = document.createElement("div");
+    head.className = "exercise-head";
+    const name = document.createElement("div");
+    name.className = "exercise-name";
+    name.textContent = exercise.exercise;
+    const meta = document.createElement("div");
+    meta.className = "meta";
+    meta.textContent = `${exercise.sets} serie · ${exercise.reps} reps · RIR ${exercise.rir} · recupero ${exercise.rest}`;
+    head.append(name, meta);
+    card.appendChild(head);
+
+    const prev = previousWeekSummary(exerciseIndex);
+    if(prev){
+      const previous = document.createElement("div");
+      previous.className = "previous";
+      previous.textContent = "Settimana precedente: " + prev;
+      card.appendChild(previous);
+    }
+
+    const setsWrap = document.createElement("div");
+    setsWrap.className = "sets";
+    const grid = document.createElement("div");
+    grid.className = "grid";
+
+    ["Set","Peso","Reps","RIR"].forEach(text => {
+      const h = document.createElement("div");
+      h.className = "hdr";
+      h.textContent = text;
+      grid.appendChild(h);
+    });
+
+    for(let setIndex=0;setIndex<exercise.sets;setIndex++){
+      const setLabel = document.createElement("div");
+      setLabel.textContent = String(setIndex + 1);
+      grid.appendChild(setLabel);
+
+      const row = saved.sets[setIndex] || {};
+      const weight = makeInput(row.weight, "kg", "decimal");
+      const reps = makeInput(row.reps, "rep", "numeric");
+      const rir = makeInput(row.rir, "RIR", "decimal");
+
+      weight.addEventListener("input", () => updateSet(exerciseIndex, setIndex, "weight", weight.value));
+      reps.addEventListener("input", () => updateSet(exerciseIndex, setIndex, "reps", reps.value));
+      rir.addEventListener("input", () => updateSet(exerciseIndex, setIndex, "rir", rir.value));
+
+      grid.append(weight, reps, rir);
+    }
+
+    setsWrap.appendChild(grid);
+
+    const notes = document.createElement("div");
+    notes.className = "notes";
+    const textarea = document.createElement("textarea");
+    textarea.placeholder = "Note opzionali: tecnica, dolore, sensazioni, variante utilizzata...";
+    textarea.value = saved.note || "";
+    textarea.addEventListener("input", () => {
+      const data = getExerciseData(currentWeek, currentDay, exerciseIndex);
+      data.note = textarea.value;
+      saveStore();
+    });
+    notes.appendChild(textarea);
+    setsWrap.appendChild(notes);
+
+    card.appendChild(setsWrap);
+    exerciseList.appendChild(card);
+  });
+}
+
+function updateSet(exerciseIndex, setIndex, key, value){
+  const data = getExerciseData(currentWeek, currentDay, exerciseIndex);
+  if(!data.sets[setIndex]) data.sets[setIndex] = {};
+  data.sets[setIndex][key] = value;
+  saveStore();
+}
+
+function downloadFile(filename, content, mime){
+  const blob = new Blob([content], {type:mime});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.style.display = "none";
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 500);
+}
+
+async function shareFile(filename, content, mime){
+  try{
+    const file = new File([content], filename, {type:mime});
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+      await navigator.share({files:[file], title:filename});
+      statusEl.textContent = "Condiviso";
+      return true;
+    }
+  }catch(err){
+    if(err && err.name === "AbortError") return true;
+  }
+  return false;
+}
+
+async function exportJSON(){
+  const payload = {exportedAt:new Date().toISOString(), tracker:"Bodybuilding Tracker - 6 settimane", plan:PLAN, data:store};
+  const content = JSON.stringify(payload, null, 2);
+  if(!(await shareFile("bodybuilding_tracker_backup.json", content, "application/json"))){
+    downloadFile("bodybuilding_tracker_backup.json", content, "application/json");
+  }
+}
+
+function csvEscape(value){ return '"' + String(value ?? "").replaceAll('"','""') + '"'; }
+
+async function exportCSV(){
+  const rows = [["week","day","exercise","set","weight_kg","reps","rir","note"]];
+  for(let w=1;w<=TOTAL_WEEKS;w++){
+    const week = store.weeks[w];
+    if(!week) continue;
+    for(const day of DAYS){
+      PLAN[day].forEach((exercise, exerciseIndex) => {
+        const saved = week[day]?.[exerciseIndex];
+        if(!saved) return;
+        for(let setIndex=0;setIndex<exercise.sets;setIndex++){
+          const s = saved.sets?.[setIndex] || {};
+          if(s.weight || s.reps || s.rir || saved.note){
+            rows.push([w,day,exercise.exercise,setIndex+1,s.weight||"",s.reps||"",s.rir||"",saved.note||""]);
+          }
+        }
+      });
+    }
+  }
+  const content = rows.map(row => row.map(csvEscape).join(",")).join("\n");
+  if(!(await shareFile("bodybuilding_tracker_progressi.csv", content, "text/csv;charset=utf-8"))){
+    downloadFile("bodybuilding_tracker_progressi.csv", content, "text/csv;charset=utf-8");
+  }
+}
+
+function buildSummary(){
+  let text = "BODYBUILDING TRACKER - PROGRESSI\n";
+  text += "Esportato: " + new Date().toLocaleString() + "\n";
+  for(let w=1;w<=TOTAL_WEEKS;w++){
+    const week = store.weeks[w];
+    if(!week) continue;
+    let weekHasData = false;
+    let weekText = `\n=== SETTIMANA ${w} ===\n`;
+    for(const day of DAYS){
+      const dayLines = [];
+      PLAN[day].forEach((exercise, exerciseIndex) => {
+        const saved = week[day]?.[exerciseIndex];
+        if(!saved) return;
+        const setLines = [];
+        for(let setIndex=0;setIndex<exercise.sets;setIndex++){
+          const s = saved.sets?.[setIndex] || {};
+          if(s.weight || s.reps || s.rir){
+            setLines.push(`S${setIndex+1}: ${s.weight || "?"} kg x ${s.reps || "?"} @RIR ${s.rir || "?"}`);
+          }
+        }
+        if(setLines.length || saved.note){
+          let line = `- ${exercise.exercise} [target ${exercise.sets}x${exercise.reps}, RIR ${exercise.rir}]: ${setLines.join(" | ")}`;
+          if(saved.note) line += ` | Note: ${saved.note}`;
+          dayLines.push(line);
+        }
+      });
+      if(dayLines.length){
+        weekHasData = true;
+        weekText += `Giorno ${day}\n${dayLines.join("\n")}\n`;
+      }
+    }
+    if(weekHasData) text += weekText;
+  }
+  if(!text.includes("=== SETTIMANA")) text += "\nNessun dato registrato.";
+  return text;
+}
+
+function openSummary(){
+  summaryText.value = buildSummary();
+  summaryModal.style.display = "flex";
+}
+
+async function copySummary(){
+  const text = summaryText.value || buildSummary();
+  try{
+    await navigator.clipboard.writeText(text);
+    statusEl.textContent = "Riepilogo copiato";
+  }catch(err){
+    summaryText.focus();
+    summaryText.select();
+    statusEl.textContent = "Selezionato: usa Copia";
+  }
+}
+
+async function shareSummary(){
+  const text = summaryText.value || buildSummary();
+  try{
+    if(navigator.share){
+      await navigator.share({title:"Bodybuilding Tracker - Progressi", text});
+      statusEl.textContent = "Condiviso";
+      return;
+    }
+  }catch(err){
+    if(err && err.name === "AbortError") return;
+  }
+  await copySummary();
+}
+
+function askResetCurrentWeek(){
+  confirmText.textContent = `Vuoi cancellare tutti i dati della settimana ${currentWeek}? L'operazione non può essere annullata.`;
+  confirmModal.style.display = "flex";
+}
+
+function resetCurrentWeekConfirmed(){
+  delete store.weeks[currentWeek];
+  saveStore();
+  confirmModal.style.display = "none";
+  renderDay();
+  statusEl.textContent = "Settimana azzerata";
+}
+
+async function importBackup(file){
+  try{
+    const obj = JSON.parse(await file.text());
+    const incoming = obj.data || obj;
+    if(!incoming.weeks) throw new Error("Formato non valido");
+    store = incoming;
+    saveStore();
+    renderDay();
+    statusEl.textContent = "Backup importato";
+  }catch(err){
+    alert("Impossibile importare il backup: " + err.message);
+  }
+}
+
+weekSelect.addEventListener("change", () => { currentWeek = Number(weekSelect.value); renderDay(); });
+daySelect.addEventListener("change", () => { currentDay = daySelect.value; renderDay(); });
+document.getElementById("exportJson").addEventListener("click", exportJSON);
+document.getElementById("exportCsv").addEventListener("click", exportCSV);
+document.getElementById("showSummary").addEventListener("click", openSummary);
+document.getElementById("copySummary").addEventListener("click", copySummary);
+document.getElementById("shareSummary").addEventListener("click", shareSummary);
+document.getElementById("downloadSummary").addEventListener("click", async () => {
+  const text = summaryText.value || buildSummary();
+  if(!(await shareFile("bodybuilding_tracker_riepilogo.txt", text, "text/plain;charset=utf-8"))){
+    downloadFile("bodybuilding_tracker_riepilogo.txt", text, "text/plain;charset=utf-8");
+  }
+});
+document.getElementById("closeSummary").addEventListener("click", () => summaryModal.style.display = "none");
+summaryModal.addEventListener("click", e => { if(e.target === summaryModal) summaryModal.style.display = "none"; });
+
+document.getElementById("resetWeek").addEventListener("click", askResetCurrentWeek);
+document.getElementById("cancelReset").addEventListener("click", () => confirmModal.style.display = "none");
+document.getElementById("confirmReset").addEventListener("click", resetCurrentWeekConfirmed);
+confirmModal.addEventListener("click", e => { if(e.target === confirmModal) confirmModal.style.display = "none"; });
+
+document.getElementById("importBtn").addEventListener("click", () => importFile.click());
+importFile.addEventListener("change", async () => {
+  if(importFile.files && importFile.files[0]){
+    await importBackup(importFile.files[0]);
+    importFile.value = "";
+  }
+});
+
+populateWeeks();
+daySelect.value = currentDay;
+renderDay();
+
+if("serviceWorker" in navigator && location.protocol.startsWith("http")){
+  navigator.serviceWorker.register("./sw.js").catch(() => {});
+}
+</script>
+</body>
+</html>
