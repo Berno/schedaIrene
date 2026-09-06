@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bodybuilding Tracker - 6 settimane</title>
+<style>
+:root{
+  --bg:#f5f6f8; --card:#fff; --line:#d9dde3; --text:#17191c; --muted:#667085;
+  --accent:#1769e0; --danger:#b42318; --ok:#067647;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+header{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--line)}
+.wrap{max-width:1000px;margin:0 auto;padding:14px 16px}
+h1{margin:0 0 10px;font-size:22px}
+.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:end}
+.field{display:flex;flex-direction:column;gap:4px}
+label{font-size:12px;color:var(--muted);font-weight:600}
+select,button,input,textarea{font:inherit}
+select,input,textarea{border:1px solid var(--line);border-radius:8px;background:#fff}
+select{padding:8px 10px;min-width:130px}
+button{border:1px solid var(--line);border-radius:8px;background:#fff;padding:8px 11px;cursor:pointer}
+button.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+button.danger{color:var(--danger)}
+.status{margin-left:auto;color:var(--ok);font-size:12px;padding-bottom:8px}
+.day-title{display:flex;justify-content:space-between;align-items:center;margin:18px 0 10px}
+.day-title h2{margin:0;font-size:20px}
+.exercise{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:12px;overflow:hidden}
+.exercise-head{padding:12px 14px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px}
+.exercise-name{font-weight:700}
+.meta{font-size:12px;color:var(--muted);text-align:right}
+.sets{padding:10px 14px 12px}
+.grid{display:grid;grid-template-columns:48px 1fr 1fr 1fr;gap:7px;align-items:center}
+.grid .hdr{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase}
+.grid input{width:100%;padding:8px 9px}
+.notes{margin-top:10px}
+.notes textarea{width:100%;min-height:52px;padding:8px 9px;resize:vertical}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.help{font-size:12px;color:var(--muted);margin-top:8px}
+@media(max-width:650px){
+  .wrap{padding:10px}
+  .controls{align-items:stretch}
+  .field{flex:1 1 140px}
+  .controls button{flex:1 1 calc(50% - 8px)}
+  .status{width:100%;margin-left:0;padding:0}
+  .exercise-head{display:block}
+  .meta{text-align:left;margin-top:4px}
+  .grid{grid-template-columns:36px 1fr 1fr 1fr;gap:5px}
+  .grid input{padding:7px 6px}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>Bodybuilding Tracker · 6 settimane</h1>
+    <div class="controls">
+      <div class="field">
+        <label for="weekSelect">Settimana</label>
+        <select id="weekSelect"></select>
+      </div>
+      <div class="field">
+        <label for="daySelect">Giorno</label>
+        <select id="daySelect">
+          <option value="A">Giorno A</option>
+          <option value="B">Giorno B</option>
+          <option value="C">Giorno C</option>
+          <option value="D">Giorno D</option>
+        </select>
+      </div>
+      <button id="exportJson" class="primary">Esporta JSON</button>
+      <button id="exportCsv">Esporta CSV</button>
+      <button id="copySummary">Copia riepilogo per ChatGPT</button>
+      <button id="importBtn">Importa backup</button>
+      <input id="importFile" type="file" accept=".json,application/json" hidden>
+      <button id="resetWeek" class="danger">Azzera settimana</button>
+      <span class="status" id="status">Pronto</span>
+    </div>
+    <div class="help">I dati vengono salvati automaticamente nel Local Storage del browser. Per farmi valutare i progressi puoi esportare JSON/CSV oppure usare “Copia riepilogo per ChatGPT”.</div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="day-title">
+    <h2 id="currentDayTitle"></h2>
+  </div>
+  <div id="exerciseList"></div>
+</main>
+
+<script>
+"use strict";
+
+const PLAN = {"A":[{"exercise":"Hip Thrust","sets":4,"reps":"6-8","rir":"2 / 2 / 2 / 1","rest":"2-3 min"},{"exercise":"Romanian Deadlift","sets":3,"reps":"6-8","rir":"2","rest":"2-3 min"},{"exercise":"Leg Curl","sets":3,"reps":"8-10","rir":"1-2","rest":"90-120 s"},{"exercise":"Back Extension 45° glute bias","sets":2,"reps":"10-12","rir":"1-2","rest":"90-120 s"},{"exercise":"Slanci laterali ai cavi","sets":2,"reps":"12-15","rir":"1","rest":"60-90 s"},{"exercise":"Adductor machine","sets":2,"reps":"12-15","rir":"1","rest":"60-90 s"},{"exercise":"Core a scelta","sets":3,"reps":"controllate","rir":"1-2","rest":"60-90 s"}],"B":[{"exercise":"Lat machine neutra/supina","sets":3,"reps":"6-8","rir":"1-2","rest":"90-120 s"},{"exercise":"Chest-supported row / T-Bar supportata","sets":3,"reps":"8-10","rir":"1-2","rest":"90-120 s"},{"exercise":"Pulley","sets":2,"reps":"8-10","rir":"1-2","rest":"90-120 s"},{"exercise":"Shoulder Press manubri","sets":3,"reps":"6-8","rir":"2","rest":"90-120 s"},{"exercise":"Alzate laterali","sets":3,"reps":"10-12","rir":"1","rest":"60-90 s"},{"exercise":"Curl al cavo","sets":3,"reps":"8-10","rir":"1","rest":"60-90 s"},{"exercise":"Pushdown","sets":3,"reps":"8-10","rir":"1","rest":"60-90 s"}],"C":[{"exercise":"Squat","sets":3,"reps":"6-8","rir":"2-3","rest":"2-3 min"},{"exercise":"Glute Bridge / Hip Thrust variante","sets":3,"reps":"8-10","rir":"1-2","rest":"2 min"},{"exercise":"Bulgarian Split Squat glute bias","sets":2,"reps":"8-10 / lato","rir":"2","rest":"90-120 s"},{"exercise":"Leg Curl","sets":2,"reps":"10-12","rir":"1-2","rest":"90-120 s"},{"exercise":"Cable Kickback","sets":2,"reps":"12-15","rir":"1","rest":"60-90 s"},{"exercise":"Abductor machine","sets":2,"reps":"12-15","rir":"1","rest":"60-90 s"}],"D":[{"exercise":"Lat machine presa prona","sets":3,"reps":"8-10","rir":"1-2","rest":"90-120 s"},{"exercise":"Upper Back machine","sets":3,"reps":"8-10","rir":"1-2","rest":"90-120 s"},{"exercise":"Rematore con bilanciere","sets":3,"reps":"8-10","rir":"2","rest":"2 min"},{"exercise":"Panca inclinata manubri","sets":3,"reps":"8-10","rir":"1-2","rest":"90-120 s"},{"exercise":"Reverse Fly / rear delt cable","sets":3,"reps":"12-15","rir":"1","rest":"60-90 s"},{"exercise":"Alzate laterali","sets":3,"reps":"10-12","rir":"1","rest":"60-90 s"},{"exercise":"Pushdown Vulken","sets":3,"reps":"8-10","rir":"1","rest":"60-90 s"}]};
+const STORAGE_KEY = "bodybuildingTrackerFemale6W_v1";
+const TOTAL_WEEKS = 6;
+
+const weekSelect = document.getElementById("weekSelect");
+const daySelect = document.getElementById("daySelect");
+const exerciseList = document.getElementById("exerciseList");
+const currentDayTitle = document.getElementById("currentDayTitle");
+const statusEl = document.getElementById("status");
+const importFile = document.getElementById("importFile");
+
+let currentWeek = 1;
+let currentDay = "A";
+let store = loadStore();
+
+function emptyStore(){
+  return { version: 2, updatedAt: null, weeks: {} };
+}
+
+function loadStore(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return emptyStore();
+    const parsed = JSON.parse(raw);
+    if(!parsed.weeks) return emptyStore();
+    return parsed;
+  }catch(err){
+    return emptyStore();
+  }
+}
+
+function saveStore(){
+  store.updatedAt = new Date().toISOString();
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
+  statusEl.textContent = "Salvato " + new Date().toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"});
+}
+
+function ensureWeek(week){
+  if(!store.weeks[week]) store.weeks[week] = {A:{}, B:{}, C:{}, D:{}};
+  if(!store.weeks[week].A) store.weeks[week].A = {};
+  if(!store.weeks[week].B) store.weeks[week].B = {};
+  if(!store.weeks[week].C) store.weeks[week].C = {};
+  return store.weeks[week];
+}
+
+function getExerciseData(week, day, exerciseIndex){
+  const w = ensureWeek(week);
+  if(!w[day][exerciseIndex]){
+    w[day][exerciseIndex] = { sets:{}, note:"" };
+  }
+  if(!w[day][exerciseIndex].sets) w[day][exerciseIndex].sets = {};
+  return w[day][exerciseIndex];
+}
+
+function populateWeeks(){
+  weekSelect.innerHTML = "";
+  for(let i=1; i<=TOTAL_WEEKS; i++){
+    const option = document.createElement("option");
+    option.value = String(i);
+    option.textContent = "Settimana " + i;
+    weekSelect.appendChild(option);
+  }
+  weekSelect.value = String(currentWeek);
+}
+
+function makeInput(value, placeholder, inputMode){
+  const input = document.createElement("input");
+  input.value = value ?? "";
+  input.placeholder = placeholder;
+  input.inputMode = inputMode;
+  return input;
+}
+
+function renderDay(){
+  currentDayTitle.textContent = "Giorno " + currentDay + " · Settimana " + currentWeek;
+  exerciseList.innerHTML = "";
+
+  PLAN[currentDay].forEach((exercise, exerciseIndex) => {
+    const saved = getExerciseData(currentWeek, currentDay, exerciseIndex);
+
+    const card = document.createElement("section");
+    card.className = "exercise";
+
+    const head = document.createElement("div");
+    head.className = "exercise-head";
+
+    const name = document.createElement("div");
+    name.className = "exercise-name";
+    name.textContent = exercise.exercise;
+
+    const meta = document.createElement("div");
+    meta.className = "meta";
+    meta.textContent = `${exercise.sets} serie · ${exercise.reps} reps · RIR ${exercise.rir} · recupero ${exercise.rest}`;
+
+    head.appendChild(name);
+    head.appendChild(meta);
+    card.appendChild(head);
+
+    const setsWrap = document.createElement("div");
+    setsWrap.className = "sets";
+
+    const grid = document.createElement("div");
+    grid.className = "grid";
+
+    ["Set","Peso","Reps","RIR"].forEach(text => {
+      const h = document.createElement("div");
+      h.className = "hdr";
+      h.textContent = text;
+      grid.appendChild(h);
+    });
+
+    for(let setIndex=0; setIndex<exercise.sets; setIndex++){
+      const setLabel = document.createElement("div");
+      setLabel.textContent = String(setIndex + 1);
+      grid.appendChild(setLabel);
+
+      const row = saved.sets[setIndex] || {};
+
+      const weight = makeInput(row.weight, "kg", "decimal");
+      const reps = makeInput(row.reps, "rep", "numeric");
+      const rir = makeInput(row.rir, "RIR", "decimal");
+
+      weight.addEventListener("input", () => updateSet(exerciseIndex, setIndex, "weight", weight.value));
+      reps.addEventListener("input", () => updateSet(exerciseIndex, setIndex, "reps", reps.value));
+      rir.addEventListener("input", () => updateSet(exerciseIndex, setIndex, "rir", rir.value));
+
+      grid.appendChild(weight);
+      grid.appendChild(reps);
+      grid.appendChild(rir);
+    }
+
+    setsWrap.appendChild(grid);
+
+    const notes = document.createElement("div");
+    notes.className = "notes";
+    const textarea = document.createElement("textarea");
+    textarea.placeholder = "Note opzionali...";
+    textarea.value = saved.note || "";
+    textarea.addEventListener("input", () => {
+      const data = getExerciseData(currentWeek, currentDay, exerciseIndex);
+      data.note = textarea.value;
+      saveStore();
+    });
+    notes.appendChild(textarea);
+    setsWrap.appendChild(notes);
+
+    card.appendChild(setsWrap);
+    exerciseList.appendChild(card);
+  });
+}
+
+function updateSet(exerciseIndex, setIndex, key, value){
+  const data = getExerciseData(currentWeek, currentDay, exerciseIndex);
+  if(!data.sets[setIndex]) data.sets[setIndex] = {};
+  data.sets[setIndex][key] = value;
+  saveStore();
+}
+
+function downloadFile(filename, content, mime){
+  const blob = new Blob([content], {type:mime});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 500);
+}
+
+function exportJSON(){
+  const payload = {
+    exportedAt: new Date().toISOString(),
+    plan: PLAN,
+    data: store
+  };
+  downloadFile("bodybuilding_tracker_backup.json", JSON.stringify(payload, null, 2), "application/json");
+}
+
+function csvEscape(value){
+  return '"' + String(value ?? "").replaceAll('"','""') + '"';
+}
+
+function exportCSV(){
+  const rows = [["week","day","exercise","set","weight","reps","rir","note"]];
+  for(let w=1; w<=TOTAL_WEEKS; w++){
+    const week = store.weeks[w];
+    if(!week) continue;
+
+    for(const day of ["A","B","C","D"]){
+      PLAN[day].forEach((exercise, exerciseIndex) => {
+        const saved = week[day]?.[exerciseIndex];
+        if(!saved) return;
+
+        for(let setIndex=0; setIndex<exercise.sets; setIndex++){
+          const setData = saved.sets?.[setIndex] || {};
+          if(setData.weight || setData.reps || setData.rir || saved.note){
+            rows.push([
+              w, day, exercise.exercise, setIndex+1,
+              setData.weight || "", setData.reps || "", setData.rir || "", saved.note || ""
+            ]);
+          }
+        }
+      });
+    }
+  }
+
+  const csv = rows.map(row => row.map(csvEscape).join(",")).join("\n");
+  downloadFile("bodybuilding_tracker_progressi.csv", csv, "text/csv;charset=utf-8");
+}
+
+function buildSummary(){
+  let text = "BODYBUILDING TRACKER - PROGRESSI\n";
+  text += "Esportato: " + new Date().toLocaleString() + "\n";
+
+  for(let w=1; w<=TOTAL_WEEKS; w++){
+    const week = store.weeks[w];
+    if(!week) continue;
+
+    text += `\n=== SETTIMANA ${w} ===\n`;
+
+    for(const day of ["A","B","C","D"]){
+      let dayLines = [];
+      PLAN[day].forEach((exercise, exerciseIndex) => {
+        const saved = week[day]?.[exerciseIndex];
+        if(!saved) return;
+
+        const setLines = [];
+        for(let setIndex=0; setIndex<exercise.sets; setIndex++){
+          const s = saved.sets?.[setIndex] || {};
+          if(s.weight || s.reps || s.rir){
+            setLines.push(`S${setIndex+1}: ${s.weight || "?"} kg x ${s.reps || "?"} @RIR ${s.rir || "?"}`);
+          }
+        }
+
+        if(setLines.length || saved.note){
+          let line = `- ${exercise.exercise}: ${setLines.join(" | ")}`;
+          if(saved.note) line += ` | Note: ${saved.note}`;
+          dayLines.push(line);
+        }
+      });
+
+      if(dayLines.length){
+        text += `Giorno ${day}\n` + dayLines.join("\n") + "\n";
+      }
+    }
+  }
+  return text;
+}
+
+async function copySummary(){
+  const text = buildSummary();
+  try{
+    await navigator.clipboard.writeText(text);
+    statusEl.textContent = "Riepilogo copiato";
+  }catch(err){
+    downloadFile("bodybuilding_tracker_riepilogo.txt", text, "text/plain;charset=utf-8");
+    statusEl.textContent = "Riepilogo scaricato";
+  }
+}
+
+function resetCurrentWeek(){
+  if(confirm(`Vuoi cancellare tutti i dati della settimana ${currentWeek}?`)){
+    delete store.weeks[currentWeek];
+    saveStore();
+    renderDay();
+  }
+}
+
+async function importBackup(file){
+  try{
+    const obj = JSON.parse(await file.text());
+    const incoming = obj.data || obj;
+    if(!incoming.weeks) throw new Error("Formato non valido");
+    store = incoming;
+    saveStore();
+    renderDay();
+    statusEl.textContent = "Backup importato";
+  }catch(err){
+    alert("Impossibile importare il backup: " + err.message);
+  }
+}
+
+weekSelect.addEventListener("change", () => {
+  currentWeek = Number(weekSelect.value);
+  renderDay();
+});
+
+daySelect.addEventListener("change", () => {
+  currentDay = daySelect.value;
+  renderDay();
+});
+
+document.getElementById("exportJson").addEventListener("click", exportJSON);
+document.getElementById("exportCsv").addEventListener("click", exportCSV);
+document.getElementById("copySummary").addEventListener("click", copySummary);
+document.getElementById("resetWeek").addEventListener("click", resetCurrentWeek);
+
+document.getElementById("importBtn").addEventListener("click", () => importFile.click());
+importFile.addEventListener("change", async () => {
+  if(importFile.files && importFile.files[0]){
+    await importBackup(importFile.files[0]);
+    importFile.value = "";
+  }
+});
+
+populateWeeks();
+daySelect.value = currentDay;
+renderDay();
+</script>
+</body>
+</html>
