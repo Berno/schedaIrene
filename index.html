@@ -4,564 +4,488 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1769e0">
+<meta name="app-version" content="2.0.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="BB Tracker">
+<meta name="apple-mobile-web-app-title" content="Irene BB">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-192.png">
-<title>Bodybuilding Tracker - 6 settimane</title>
+<title>Irene · Full body 8 settimane · v2.0.0</title>
 <style>
-:root{
-  --bg:#f5f6f8; --card:#fff; --line:#d9dde3; --text:#17191c; --muted:#667085;
-  --accent:#1769e0; --danger:#b42318; --ok:#067647; --soft:#eef4ff;
-}
-*{box-sizing:border-box}
-html{background:var(--bg)}
-body{
-  margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-  background:var(--bg);color:var(--text);
-  padding-bottom:env(safe-area-inset-bottom);
-}
-header{
-  position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--line);
-  padding-top:env(safe-area-inset-top);
-}
-.wrap{max-width:1100px;margin:0 auto;padding:14px 16px}
-h1{margin:0 0 10px;font-size:22px}
-.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:end}
-.field{display:flex;flex-direction:column;gap:4px}
-label{font-size:12px;color:var(--muted);font-weight:600}
-select,button,input,textarea{font:inherit}
-select,input,textarea{border:1px solid var(--line);border-radius:8px;background:#fff}
-select{padding:10px;min-width:145px}
-button{
-  border:1px solid var(--line);border-radius:8px;background:#fff;padding:10px 12px;
-  cursor:pointer;touch-action:manipulation;
-}
-button.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
-button.danger{color:var(--danger)}
-.status{margin-left:auto;color:var(--ok);font-size:12px;padding-bottom:8px}
-.help{font-size:12px;color:var(--muted);margin-top:8px}
-.install-tip{margin-top:8px;padding:8px 10px;background:var(--soft);border-radius:8px;font-size:12px;color:#344054}
-.day-title{display:flex;justify-content:space-between;align-items:center;margin:18px 0 10px;gap:12px}
-.day-title h2{margin:0;font-size:20px}
-.week-note{font-size:12px;color:var(--muted)}
-.exercise{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:12px;overflow:hidden}
-.exercise-head{padding:12px 14px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px}
-.exercise-name{font-weight:700}
-.meta{font-size:12px;color:var(--muted);text-align:right}
-.sets{padding:10px 14px 12px}
-.grid{display:grid;grid-template-columns:48px 1fr 1fr 1fr;gap:7px;align-items:center}
-.grid .hdr{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase}
-.grid input{width:100%;padding:10px 9px}
-.notes{margin-top:10px}
-.notes textarea{width:100%;min-height:52px;padding:10px 9px;resize:vertical}
-.previous{margin:0 14px 12px;padding:8px 10px;border-radius:8px;background:var(--soft);font-size:12px;color:#344054}
-.previous strong{color:#1d2939}
-.footer-note{font-size:12px;color:var(--muted);margin:18px 0 36px}
-.modal-backdrop{
-  position:fixed;inset:0;background:rgba(0,0,0,.38);display:none;align-items:center;
-  justify-content:center;z-index:50;padding:16px;
-}
-.modal{
-  width:min(900px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:14px;
-  padding:16px;border:1px solid var(--line);
-}
-.modal h3{margin-top:0}
-.modal textarea{
-  width:100%;min-height:320px;padding:10px;
-  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px
-}
-.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:10px;flex-wrap:wrap}
-.confirm-text{font-size:15px;line-height:1.45}
-@media(max-width:700px){
-  .wrap{padding:10px 10px 12px}
-  .controls{align-items:stretch}
-  .field{flex:1 1 140px}
-  .controls button{flex:1 1 calc(50% - 8px)}
-  .status{width:100%;margin-left:0;padding:0}
-  .exercise-head{display:block}
-  .meta{text-align:left;margin-top:4px}
-  .grid{grid-template-columns:36px 1fr 1fr 1fr;gap:5px}
-  .grid input{padding:10px 6px}
-}
+:root{--bg:#f4f6f9;--card:#fff;--ink:#172b3a;--muted:#536779;--line:#d8e1e9;--blue:#1769e0;--soft:#edf4ff;--red:#b42318;--green:#087443;--amber:#8b5600}
+*{box-sizing:border-box}html{background:var(--bg);color:var(--ink)}body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding-bottom:env(safe-area-inset-bottom)}
+button,input,select,textarea{font:inherit}button,select{touch-action:manipulation}button{cursor:pointer;min-height:44px}input,select,textarea{font-size:16px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:9px}input,select{min-height:44px;padding:9px}textarea{padding:10px;resize:vertical;width:100%;min-height:64px}input:focus,select:focus,textarea:focus,button:focus-visible{outline:3px solid #9bc3ff;outline-offset:2px}button{border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--ink);padding:9px 12px}
+.wrap{max-width:900px;margin:auto;padding:14px 16px}header{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}header .wrap{padding-top:8px;padding-bottom:7px}.topline{display:flex;align-items:center;justify-content:space-between;gap:10px}.brand{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}h1{font-size:19px;margin:0;letter-spacing:-.4px}.version{font-size:12px;background:var(--soft);padding:3px 7px;border-radius:20px;color:#24519a;font-weight:700}.menu-anchor{position:relative}.dots{font-size:27px;width:44px;line-height:1;padding:0}.selectors{display:flex;gap:9px;margin-top:5px}.selectors label{flex:1;font-size:11px;font-weight:600;color:var(--muted)}.selectors select{display:block;width:100%;padding:7px 9px;margin-top:3px;min-height:40px;font-weight:500}.statusline{font-size:11px;color:var(--green);margin-top:5px;min-height:15px;display:flex;justify-content:space-between;gap:8px}.offline{color:var(--muted)}
+[hidden]{display:none!important}.menu{position:absolute;right:0;top:49px;width:min(290px,calc(100vw - 28px));max-height:70vh;overflow:auto;overscroll-behavior:contain;background:#fff;border:1px solid var(--line);box-shadow:0 12px 38px #172b3a30;border-radius:13px;padding:6px;z-index:30}.menu button{border:0;text-align:left;width:100%;background:#fff;border-radius:7px;display:block;font-size:15px}.menu button:hover{background:var(--soft)}.menu hr{border:0;border-top:1px solid var(--line);margin:5px}.danger{color:var(--red)!important}.primary{background:var(--blue)!important;color:#fff!important;border-color:var(--blue)!important}
+.warning{background:#fff3df;color:#6e4300;border:1px solid #e7c790;border-radius:9px;padding:10px;font-size:13px;margin-bottom:12px}.dayhead{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin:5px 0 14px}h2{font-size:21px;margin:0 0 5px}.sub{font-size:12px;color:var(--muted)}.date{width:145px;flex-shrink:0}.date label{display:block;font-size:11px;color:var(--muted);margin-bottom:4px}.date input{width:100%;min-width:0;font-size:14px;padding:7px}.exercise{background:#fff;border:1px solid var(--line);border-radius:14px;margin-bottom:14px;overflow:hidden}.ex-head{padding:13px 13px 10px;border-bottom:1px solid var(--line)}.ex-title{font-size:16px;margin:0 0 6px;font-weight:700;line-height:1.35}.plan-index{color:var(--blue)}.meta{font-size:12px;color:var(--muted);line-height:1.6}.order-line{display:flex;align-items:center;gap:9px;margin-top:10px}.order-line label{font-size:12px;font-weight:600}.order-input{width:68px;min-height:40px;padding:6px 9px}.order-msg{color:var(--amber);font-size:11px;line-height:1.35}.body{padding:12px 13px}.setgrid{display:grid;grid-template-columns:29px minmax(0,1.2fr) minmax(0,1fr) minmax(0,.8fr);gap:7px;align-items:center}.setgrid input{width:100%;min-width:0}.setgrid .th{font-size:10px;line-height:1.4;color:var(--muted);font-weight:700}.setno{font-size:13px;color:var(--muted)}.note-label{display:block;font-size:12px;font-weight:600;margin:12px 0 5px}.previous{background:var(--soft);padding:9px 10px;margin-top:11px;border-radius:8px;font-size:12px;line-height:1.6;overflow-wrap:anywhere}.tech{font-size:12px;color:var(--muted);line-height:1.5;margin-top:12px}.tech summary{cursor:pointer;font-weight:600;padding:4px 0}.tech p{margin:6px 0 0}.empty{color:var(--muted);font-size:12px}.footer{font-size:12px;color:var(--muted);line-height:1.6;padding:5px 0 25px}
+.backdrop{position:fixed;inset:0;background:#0b203977;z-index:50;display:flex;align-items:center;justify-content:center;padding:max(14px,env(safe-area-inset-top)) 14px max(14px,env(safe-area-inset-bottom))}.modal{background:#fff;border-radius:15px;border:1px solid var(--line);width:min(760px,100%);max-height:90dvh;max-height:90vh;overflow:auto;overscroll-behavior:contain;padding:17px}.modal h2{font-size:19px}.modal p,.modal li{font-size:14px;line-height:1.6}.modal ul{padding-left:20px}.modal textarea{min-height:260px;font-size:13px;font-family:ui-monospace,monospace}.modal-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:14px}.modal-actions button{font-size:14px}.guide h3{font-size:15px;color:#1856a0;margin:17px 0 6px}.guide p{margin:6px 0}.modal-open{overflow:hidden}a{color:#145bc0}.footnote{font-size:12px!important;color:var(--muted)}
+@media(max-width:430px){.wrap{padding:12px 10px}.brand{gap:6px}h1{font-size:18px}.dayhead{display:block}.date{margin-top:10px;width:100%;display:flex;align-items:center;gap:10px}.date label{margin:0}.date input{width:165px}.setgrid{gap:5px}.body{padding:11px}.ex-head{padding:12px 11px}.modal{padding:14px}.modal-actions button{flex:1 1 auto}}
 </style>
 </head>
 <body>
-<header>
-  <div class="wrap">
-    <h1>Bodybuilding Tracker · 6 settimane</h1>
-    <div class="controls">
-      <div class="field">
-        <label for="weekSelect">Settimana</label>
-        <select id="weekSelect"></select>
-      </div>
-      <div class="field">
-        <label for="daySelect">Giorno</label>
-        <select id="daySelect">
-          <option value="A">Giorno A · Lower</option>
-          <option value="B">Giorno B · Upper</option>
-          <option value="C">Giorno C · Lower</option>
-          <option value="D">Giorno D · Upper</option>
-        </select>
-      </div>
-      <button id="exportJson" class="primary">Backup JSON</button>
-      <button id="exportCsv">CSV</button>
-      <button id="showSummary">Riepilogo ChatGPT</button>
-      <button id="importBtn">Importa backup</button>
-      <input id="importFile" type="file" accept=".json,application/json" hidden>
-      <button id="resetWeek" class="danger">Azzera settimana</button>
-      <span class="status" id="status">Pronto</span>
-    </div>
-    <div class="help">I dati vengono salvati automaticamente nel Local Storage di Safari.</div>
-    <div class="install-tip" id="installTip">Su iPhone: apri questa pagina in Safari → Condividi → Aggiungi alla schermata Home.</div>
-  </div>
-</header>
-
+<header><div class="wrap">
+ <div class="topline"><div class="brand"><h1>Irene · Full body</h1><span class="version">v2.0.0</span></div>
+ <div class="menu-anchor"><button id="menuToggle" class="dots" type="button" aria-label="Apri menu azioni" aria-expanded="false" aria-controls="actionsMenu">⋮</button>
+ <nav id="actionsMenu" class="menu" aria-label="Azioni" hidden>
+  <button id="exportJson" type="button">Backup JSON</button><button id="exportCsv" type="button">Esporta CSV</button><button id="showSummary" type="button">Riepilogo da condividere</button><button id="importBtn" type="button">Importa backup</button><hr>
+  <button id="showGuide" type="button">Guida e progressioni</button><button id="updateApp" type="button">Controlla e aggiorna l’app</button><hr>
+  <button id="resetWeek" class="danger" type="button">Azzera questa settimana</button><button id="resetAll" class="danger" type="button">Azzera tutte le 8 settimane</button>
+ </nav></div></div>
+ <div class="selectors"><label for="weekSelect">Settimana<select id="weekSelect"></select></label><label for="daySelect">Seduta<select id="daySelect"><option value="A">A · Lunedì</option><option value="B">B · Mercoledì</option><option value="C">C · Venerdì</option></select></label></div>
+ <div class="statusline"><span id="status" role="status" aria-live="polite">Pronto</span><span id="connection" class="offline"></span></div>
+</div></header>
 <main class="wrap">
-  <div class="day-title">
-    <div>
-      <h2 id="currentDayTitle"></h2>
-      <div class="week-note" id="weekNote"></div>
-    </div>
-  </div>
-  <div id="exerciseList"></div>
-  <div class="footer-note">
-    Per valutare i progressi puoi usare <b>Riepilogo ChatGPT</b>, oppure condividere/esportare il backup JSON o il CSV.
-  </div>
+ <div id="storageWarning" class="warning" hidden></div>
+ <div id="updateNotice" class="warning" hidden>Nuova versione disponibile. Salva le annotazioni, poi apri ⋮ → Controlla e aggiorna l’app.</div>
+ <div class="dayhead"><div><h2 id="currentDayTitle"></h2><div id="daySubtitle" class="sub"></div></div><div class="date"><label for="sessionDate">Data seduta</label><input id="sessionDate" type="date" aria-label="Data della seduta"></div></div>
+ <div id="exerciseList"></div>
+ <p class="footer">Ordine effettivo: indica 1, 2, 3… nei box; la scheda mantiene l’ordine previsto. Backup e riepilogo sono nel menu ⋮. I dati restano su questo dispositivo: esporta un backup periodico.</p>
 </main>
-
-<div class="modal-backdrop" id="summaryModal">
-  <div class="modal">
-    <h3>Riepilogo progressi</h3>
-    <textarea id="summaryText" readonly></textarea>
-    <div class="modal-actions">
-      <button id="shareSummary">Condividi</button>
-      <button id="downloadSummary">Salva TXT</button>
-      <button id="copySummary" class="primary">Copia</button>
-      <button id="closeSummary">Chiudi</button>
-    </div>
-  </div>
-</div>
-
-<div class="modal-backdrop" id="confirmModal">
-  <div class="modal" style="max-width:520px">
-    <h3>Conferma azzeramento</h3>
-    <div class="confirm-text" id="confirmText"></div>
-    <div class="modal-actions">
-      <button id="cancelReset">Annulla</button>
-      <button id="confirmReset" class="danger">Azzera</button>
-    </div>
-  </div>
-</div>
-
+<input id="importFile" type="file" accept=".json,application/json" hidden>
+<div id="summaryModal" class="backdrop" hidden><section class="modal" role="dialog" aria-modal="true" aria-labelledby="summaryTitle"><h2 id="summaryTitle">Riepilogo delle 8 settimane</h2><p class="footnote">Include date, ordine effettivo, assistenza, carichi, ripetizioni, RIR e note.</p><textarea id="summaryText" aria-label="Riepilogo da condividere" readonly></textarea><div class="modal-actions"><button id="closeSummary" type="button">Chiudi</button><button id="copySummary" type="button">Copia</button><button id="downloadSummary" type="button">File TXT</button><button id="shareSummary" class="primary" type="button">Condividi</button></div></section></div>
+<div id="confirmModal" class="backdrop" hidden><section class="modal" role="dialog" aria-modal="true" aria-labelledby="confirmTitle"><h2 id="confirmTitle">Conferma</h2><p id="confirmText"></p><div class="modal-actions"><button id="cancelConfirm" type="button">Annulla</button><button id="confirmAction" class="danger" type="button">Conferma</button></div></section></div>
+<div id="guideModal" class="backdrop" hidden><section class="modal guide" role="dialog" aria-modal="true" aria-labelledby="guideTitle"><h2 id="guideTitle">Irene · v2.0.0 · 8 settimane</h2>
+ <h3>Serie, RIR e carichi</h3><p>Le serie di riscaldamento non vanno registrate come serie allenanti. RIR 2 significa che restano due ripetizioni pulite con lo stesso ROM. Registra il RIR reale, anche se diverso dal target. Non è richiesto il cedimento.</p>
+ <h3>Come progredire</h3><p>Quando tutte le serie raggiungono il limite alto del range con tecnica e RIR previsti, prova il minimo incremento pratico nella seduta successiva. Se il salto è troppo grande, mantieni il peso e annotalo. Nei manubri registra il peso di uno; nei bilancieri il totale con barra. Annota le convenzioni di macchine e Smith.</p>
+ <h3>Trazioni assistite</h3><p>Più kg selezionati = più aiuto. Arrivata a 10/10/10 con i RIR previsti, <strong>riduci l’assistenza</strong>. Registra i kg di assistenza: non sottrarli al peso corporeo. Usa la stessa macchina e una presa confortevole.</p>
+ <h3>Ordine e note</h3><p>In ogni box scrivi la posizione effettiva: 1 per il primo esercizio svolto, 2 per il secondo e così via. Non riordina la pagina. Nel riepilogo le posizioni note vengono ordinate; i numeri duplicati sono segnalati. Per il kickback usa le note per differenze tra lato destro e sinistro.</p>
+ <h3>Valutazioni</h3><p>Prime 2-3 settimane: durata, recupero, comfort e tecnica. Dopo 6-8 settimane: progressioni e primi cambiamenti. Dolore insolito, fastidi crescenti o cali persistenti vanno segnalati. La crescita dei quadricipiti verrà valutata senza escluderne l’allenamento.</p>
+ <h3>iPhone e backup</h3><p>Apri il sito HTTPS in Safari, poi Condividi → Aggiungi alla schermata Home. Dopo il primo caricamento completo l’app funziona anche offline. Safari e l’app Home possono avere archivi distinti: scegli da dove usarla e conserva backup JSON. Evita navigazione privata e non cancellare i dati del sito senza un backup.</p><p>I backup della vecchia scheda non sono compatibili. “Azzera settimana” cancella solo la settimana selezionata; “Azzera tutte” riparte dalla settimana 1. Entrambe chiedono conferma.</p>
+ <div class="modal-actions"><button id="closeGuide" class="primary" type="button">Chiudi guida</button></div>
+</section></div>
 <script>
 "use strict";
-
-const PLAN = {
-  A: [
-    {exercise:"Hip Thrust", sets:4, reps:"6-8", rir:"2 / 2 / 2 / 1", rest:"2-3 min"},
-    {exercise:"Romanian Deadlift", sets:3, reps:"6-8", rir:"2", rest:"2-3 min"},
-    {exercise:"Leg Curl", sets:3, reps:"8-10", rir:"1-2", rest:"90-120 s"},
-    {exercise:"Back Extension 45° glute bias", sets:2, reps:"10-12", rir:"1-2", rest:"90-120 s"},
-    {exercise:"Slanci laterali ai cavi", sets:2, reps:"12-15", rir:"1", rest:"60-90 s"},
-    {exercise:"Adductor machine", sets:2, reps:"12-15", rir:"1", rest:"60-90 s"},
-    {exercise:"Core a scelta", sets:3, reps:"controllate", rir:"1-2", rest:"60-90 s"}
-  ],
-  B: [
-    {exercise:"Lat machine neutra/supina", sets:3, reps:"6-8", rir:"1-2", rest:"90-120 s"},
-    {exercise:"Chest-supported row / T-Bar supportata", sets:3, reps:"8-10", rir:"1-2", rest:"90-120 s"},
-    {exercise:"Pulley", sets:2, reps:"8-10", rir:"1-2", rest:"90-120 s"},
-    {exercise:"Shoulder Press manubri", sets:3, reps:"6-8", rir:"2", rest:"90-120 s"},
-    {exercise:"Alzate laterali", sets:3, reps:"10-12", rir:"1", rest:"60-90 s"},
-    {exercise:"Curl al cavo", sets:3, reps:"8-10", rir:"1", rest:"60-90 s"},
-    {exercise:"Pushdown", sets:3, reps:"8-10", rir:"1", rest:"60-90 s"}
-  ],
-  C: [
-    {exercise:"Squat", sets:3, reps:"6-8", rir:"2-3", rest:"2-3 min"},
-    {exercise:"Glute Bridge / Hip Thrust variante", sets:3, reps:"8-10", rir:"1-2", rest:"2 min"},
-    {exercise:"Bulgarian Split Squat glute bias", sets:2, reps:"8-10 / lato", rir:"2", rest:"90-120 s"},
-    {exercise:"Leg Curl", sets:2, reps:"10-12", rir:"1-2", rest:"90-120 s"},
-    {exercise:"Cable Kickback", sets:2, reps:"12-15", rir:"1", rest:"60-90 s"},
-    {exercise:"Abductor machine", sets:2, reps:"12-15", rir:"1", rest:"60-90 s"}
-  ],
-  D: [
-    {exercise:"Lat machine presa prona", sets:3, reps:"8-10", rir:"1-2", rest:"90-120 s"},
-    {exercise:"Upper Back machine", sets:3, reps:"8-10", rir:"1-2", rest:"90-120 s"},
-    {exercise:"Rematore con bilanciere", sets:3, reps:"8-10", rir:"2", rest:"2 min"},
-    {exercise:"Panca inclinata manubri", sets:3, reps:"8-10", rir:"1-2", rest:"90-120 s"},
-    {exercise:"Reverse Fly / rear delt cable", sets:3, reps:"12-15", rir:"1", rest:"60-90 s"},
-    {exercise:"Alzate laterali", sets:3, reps:"10-12", rir:"1", rest:"60-90 s"},
-    {exercise:"Pushdown Vulken", sets:3, reps:"8-10", rir:"1", rest:"60-90 s"}
-  ]
-};
-
-const STORAGE_KEY = "bodybuildingTrackerFemale6W_v1";
-const TOTAL_WEEKS = 6;
-const DAYS = ["A","B","C","D"];
-
-const weekSelect = document.getElementById("weekSelect");
-const daySelect = document.getElementById("daySelect");
-const exerciseList = document.getElementById("exerciseList");
-const currentDayTitle = document.getElementById("currentDayTitle");
-const weekNote = document.getElementById("weekNote");
-const statusEl = document.getElementById("status");
-const importFile = document.getElementById("importFile");
-
-const summaryModal = document.getElementById("summaryModal");
-const summaryText = document.getElementById("summaryText");
-const confirmModal = document.getElementById("confirmModal");
-const confirmText = document.getElementById("confirmText");
-
-let currentWeek = 1;
-let currentDay = "A";
-let store = loadStore();
-
-function emptyStore(){ return {version:1, updatedAt:null, weeks:{}}; }
-
-function loadStore(){
-  try{
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if(!raw) return emptyStore();
-    const parsed = JSON.parse(raw);
-    if(!parsed || !parsed.weeks) return emptyStore();
-    return parsed;
-  }catch(err){
-    return emptyStore();
-  }
-}
-
-function saveStore(){
-  store.updatedAt = new Date().toISOString();
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
-  statusEl.textContent = "Salvato " + new Date().toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"});
-}
-
-function ensureWeek(week){
-  if(!store.weeks[week]) store.weeks[week] = {};
-  for(const d of DAYS){
-    if(!store.weeks[week][d]) store.weeks[week][d] = {};
-  }
-  return store.weeks[week];
-}
-
-function getExerciseData(week, day, exerciseIndex){
-  const w = ensureWeek(week);
-  if(!w[day][exerciseIndex]) w[day][exerciseIndex] = {sets:{}, note:""};
-  if(!w[day][exerciseIndex].sets) w[day][exerciseIndex].sets = {};
-  return w[day][exerciseIndex];
-}
-
-function populateWeeks(){
-  weekSelect.innerHTML = "";
-  for(let i=1;i<=TOTAL_WEEKS;i++){
-    const option = document.createElement("option");
-    option.value = String(i);
-    option.textContent = "Settimana " + i;
-    weekSelect.appendChild(option);
-  }
-  weekSelect.value = String(currentWeek);
-}
-
-function makeInput(value, placeholder, inputMode){
-  const input = document.createElement("input");
-  input.value = value ?? "";
-  input.placeholder = placeholder;
-  input.inputMode = inputMode;
-  return input;
-}
-
-function previousWeekSummary(exerciseIndex){
-  if(currentWeek <= 1) return "";
-  const prev = store.weeks[currentWeek - 1]?.[currentDay]?.[exerciseIndex];
-  if(!prev) return "";
-  const ex = PLAN[currentDay][exerciseIndex];
-  const parts = [];
-  for(let setIndex=0;setIndex<ex.sets;setIndex++){
-    const s = prev.sets?.[setIndex] || {};
-    if(s.weight || s.reps || s.rir){
-      parts.push(`S${setIndex+1}: ${s.weight || "?"}kg × ${s.reps || "?"} @RIR ${s.rir || "?"}`);
-    }
-  }
-  return parts.join(" · ");
-}
-
-function renderDay(){
-  currentDayTitle.textContent = "Giorno " + currentDay + " · Settimana " + currentWeek;
-  weekNote.textContent = currentWeek > 1 ? "Se presenti, vengono mostrati anche i dati della settimana precedente." : "Prima settimana del blocco.";
-  exerciseList.innerHTML = "";
-
-  PLAN[currentDay].forEach((exercise, exerciseIndex) => {
-    const saved = getExerciseData(currentWeek, currentDay, exerciseIndex);
-    const card = document.createElement("section");
-    card.className = "exercise";
-
-    const head = document.createElement("div");
-    head.className = "exercise-head";
-    const name = document.createElement("div");
-    name.className = "exercise-name";
-    name.textContent = exercise.exercise;
-    const meta = document.createElement("div");
-    meta.className = "meta";
-    meta.textContent = `${exercise.sets} serie · ${exercise.reps} reps · RIR ${exercise.rir} · recupero ${exercise.rest}`;
-    head.append(name, meta);
-    card.appendChild(head);
-
-    const prev = previousWeekSummary(exerciseIndex);
-    if(prev){
-      const previous = document.createElement("div");
-      previous.className = "previous";
-      previous.textContent = "Settimana precedente: " + prev;
-      card.appendChild(previous);
-    }
-
-    const setsWrap = document.createElement("div");
-    setsWrap.className = "sets";
-    const grid = document.createElement("div");
-    grid.className = "grid";
-
-    ["Set","Peso","Reps","RIR"].forEach(text => {
-      const h = document.createElement("div");
-      h.className = "hdr";
-      h.textContent = text;
-      grid.appendChild(h);
-    });
-
-    for(let setIndex=0;setIndex<exercise.sets;setIndex++){
-      const setLabel = document.createElement("div");
-      setLabel.textContent = String(setIndex + 1);
-      grid.appendChild(setLabel);
-
-      const row = saved.sets[setIndex] || {};
-      const weight = makeInput(row.weight, "kg", "decimal");
-      const reps = makeInput(row.reps, "rep", "numeric");
-      const rir = makeInput(row.rir, "RIR", "decimal");
-
-      weight.addEventListener("input", () => updateSet(exerciseIndex, setIndex, "weight", weight.value));
-      reps.addEventListener("input", () => updateSet(exerciseIndex, setIndex, "reps", reps.value));
-      rir.addEventListener("input", () => updateSet(exerciseIndex, setIndex, "rir", rir.value));
-
-      grid.append(weight, reps, rir);
-    }
-
-    setsWrap.appendChild(grid);
-
-    const notes = document.createElement("div");
-    notes.className = "notes";
-    const textarea = document.createElement("textarea");
-    textarea.placeholder = "Note opzionali: tecnica, dolore, sensazioni, variante utilizzata...";
-    textarea.value = saved.note || "";
-    textarea.addEventListener("input", () => {
-      const data = getExerciseData(currentWeek, currentDay, exerciseIndex);
-      data.note = textarea.value;
-      saveStore();
-    });
-    notes.appendChild(textarea);
-    setsWrap.appendChild(notes);
-
-    card.appendChild(setsWrap);
-    exerciseList.appendChild(card);
-  });
-}
-
-function updateSet(exerciseIndex, setIndex, key, value){
-  const data = getExerciseData(currentWeek, currentDay, exerciseIndex);
-  if(!data.sets[setIndex]) data.sets[setIndex] = {};
-  data.sets[setIndex][key] = value;
-  saveStore();
-}
-
-function downloadFile(filename, content, mime){
-  const blob = new Blob([content], {type:mime});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  a.style.display = "none";
-  document.body.appendChild(a);
-  a.click();
-  setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 500);
-}
-
-async function shareFile(filename, content, mime){
-  try{
-    const file = new File([content], filename, {type:mime});
-    if(navigator.canShare && navigator.canShare({files:[file]})){
-      await navigator.share({files:[file], title:filename});
-      statusEl.textContent = "Condiviso";
-      return true;
-    }
-  }catch(err){
-    if(err && err.name === "AbortError") return true;
-  }
-  return false;
-}
-
-async function exportJSON(){
-  const payload = {exportedAt:new Date().toISOString(), tracker:"Bodybuilding Tracker - 6 settimane", plan:PLAN, data:store};
-  const content = JSON.stringify(payload, null, 2);
-  if(!(await shareFile("bodybuilding_tracker_backup.json", content, "application/json"))){
-    downloadFile("bodybuilding_tracker_backup.json", content, "application/json");
-  }
-}
-
-function csvEscape(value){ return '"' + String(value ?? "").replaceAll('"','""') + '"'; }
-
-async function exportCSV(){
-  const rows = [["week","day","exercise","set","weight_kg","reps","rir","note"]];
-  for(let w=1;w<=TOTAL_WEEKS;w++){
-    const week = store.weeks[w];
-    if(!week) continue;
-    for(const day of DAYS){
-      PLAN[day].forEach((exercise, exerciseIndex) => {
-        const saved = week[day]?.[exerciseIndex];
-        if(!saved) return;
-        for(let setIndex=0;setIndex<exercise.sets;setIndex++){
-          const s = saved.sets?.[setIndex] || {};
-          if(s.weight || s.reps || s.rir || saved.note){
-            rows.push([w,day,exercise.exercise,setIndex+1,s.weight||"",s.reps||"",s.rir||"",saved.note||""]);
-          }
-        }
-      });
-    }
-  }
-  const content = rows.map(row => row.map(csvEscape).join(",")).join("\n");
-  if(!(await shareFile("bodybuilding_tracker_progressi.csv", content, "text/csv;charset=utf-8"))){
-    downloadFile("bodybuilding_tracker_progressi.csv", content, "text/csv;charset=utf-8");
-  }
-}
-
-function buildSummary(){
-  let text = "BODYBUILDING TRACKER - PROGRESSI\n";
-  text += "Esportato: " + new Date().toLocaleString() + "\n";
-  for(let w=1;w<=TOTAL_WEEKS;w++){
-    const week = store.weeks[w];
-    if(!week) continue;
-    let weekHasData = false;
-    let weekText = `\n=== SETTIMANA ${w} ===\n`;
-    for(const day of DAYS){
-      const dayLines = [];
-      PLAN[day].forEach((exercise, exerciseIndex) => {
-        const saved = week[day]?.[exerciseIndex];
-        if(!saved) return;
-        const setLines = [];
-        for(let setIndex=0;setIndex<exercise.sets;setIndex++){
-          const s = saved.sets?.[setIndex] || {};
-          if(s.weight || s.reps || s.rir){
-            setLines.push(`S${setIndex+1}: ${s.weight || "?"} kg x ${s.reps || "?"} @RIR ${s.rir || "?"}`);
-          }
-        }
-        if(setLines.length || saved.note){
-          let line = `- ${exercise.exercise} [target ${exercise.sets}x${exercise.reps}, RIR ${exercise.rir}]: ${setLines.join(" | ")}`;
-          if(saved.note) line += ` | Note: ${saved.note}`;
-          dayLines.push(line);
-        }
-      });
-      if(dayLines.length){
-        weekHasData = true;
-        weekText += `Giorno ${day}\n${dayLines.join("\n")}\n`;
+const APP_VERSION="2.0.0", PLAN_ID="irene-fullbody-8w-v2", SCHEMA_VERSION=2, TOTAL_WEEKS=8;
+const STORAGE_KEY="bodybuildingTrackerIrene8W_v2", LEGACY_KEY="bodybuildingTrackerFemale6W_v1";
+const PLAN={
+  "A": {
+    "label": "A · Lunedì",
+    "title": "Trazioni, squat e glutei",
+    "exercises": [
+      {
+        "id": "assisted-pullup",
+        "name": "Trazioni assistite alla macchina",
+        "sets": 3,
+        "reps": "8-10",
+        "rir": [
+          2,
+          1,
+          1
+        ],
+        "rest": "150-180 s",
+        "tip": "Presa neutra se disponibile e confortevole. Più kg selezionati = più assistenza. A 10/10/10 con i RIR previsti, riduci l’assistenza del minimo scatto. Registra assistenza, non peso corporeo meno assistenza.",
+        "mode": "assistance"
+      },
+      {
+        "id": "squat",
+        "name": "Squat libero con bilanciere",
+        "sets": 3,
+        "reps": "8-10",
+        "rir": [
+          2,
+          2,
+          2
+        ],
+        "rest": "3-4 min",
+        "tip": "Profondità controllata e ripetibile. Mantieni RIR 2 e registra il peso totale, barra inclusa.",
+        "mode": "load"
+      },
+      {
+        "id": "hip-thrust",
+        "name": "Hip thrust",
+        "sets": 3,
+        "reps": "8-10",
+        "rir": [
+          2,
+          1,
+          1
+        ],
+        "rest": "3 min",
+        "tip": "Completa l’estensione dell’anca senza aggiungere movimento lombare.",
+        "mode": "load"
+      },
+      {
+        "id": "incline-press",
+        "name": "Panca inclinata bassa con manubri",
+        "sets": 3,
+        "reps": "8-10",
+        "rir": [
+          2,
+          1,
+          1
+        ],
+        "rest": "2-3 min",
+        "tip": "Panca a circa 15-30°. Registra il peso di un singolo manubrio.",
+        "mode": "load"
+      },
+      {
+        "id": "seated-lateral",
+        "name": "Alzate laterali con manubri da seduta",
+        "sets": 3,
+        "reps": "12-14",
+        "rir": [
+          2,
+          1,
+          1
+        ],
+        "rest": "90 s",
+        "tip": "Busto stabile e niente slanci. Registra il peso di un singolo manubrio.",
+        "mode": "load"
+      },
+      {
+        "id": "scott",
+        "name": "Curl con bilanciere EZ su panca Scott",
+        "sets": 3,
+        "reps": "10-12",
+        "rir": [
+          2,
+          1,
+          1
+        ],
+        "rest": "90-120 s",
+        "tip": "Discesa controllata, senza rimbalzi. Registra il totale con barra EZ inclusa.",
+        "mode": "load"
+      },
+      {
+        "id": "overhead-triceps",
+        "name": "Estensioni tricipiti sopra la testa al cavo",
+        "sets": 2,
+        "reps": "10-12",
+        "rir": [
+          1,
+          1
+        ],
+        "rest": "90-120 s",
+        "tip": "Escursione confortevole, gomiti relativamente stabili.",
+        "mode": "load"
       }
+    ]
+  },
+  "B": {
+    "label": "B · Mercoledì",
+    "title": "Dorso, spalle e pressa",
+    "exercises": [
+      {
+        "id": "barbell-row",
+        "name": "Rematore con bilanciere senza supporto",
+        "sets": 3,
+        "reps": "8-10",
+        "rir": [
+          2,
+          2,
+          1
+        ],
+        "rest": "150-180 s",
+        "tip": "Presa prona, gomiti relativamente vicini al busto. Mantieni l’inclinazione del tronco senza slanci.",
+        "mode": "load"
+      },
+      {
+        "id": "leg-press",
+        "name": "Pressa a 45°",
+        "sets": 3,
+        "reps": "10-12",
+        "rir": [
+          2,
+          2,
+          1
+        ],
+        "rest": "3 min",
+        "tip": "ROM ampio e controllato con bacino appoggiato. Annota la convenzione del carico.",
+        "mode": "load"
+      },
+      {
+        "id": "smith-press",
+        "name": "Shoulder press alla Smith machine",
+        "sets": 3,
+        "reps": "8-10",
+        "rir": [
+          2,
+          1,
+          1
+        ],
+        "rest": "2-3 min",
+        "tip": "Regola panca e schienale per una traiettoria confortevole davanti al viso.",
+        "mode": "load"
+      },
+      {
+        "id": "wide-row",
+        "name": "Vertical row presa larga",
+        "sets": 3,
+        "reps": "10-12",
+        "rir": [
+          2,
+          1,
+          1
+        ],
+        "rest": "2 min",
+        "tip": "Macchina da remata orizzontale, non tirata al mento. Gomiti aperti e movimento controllato di braccia e scapole.",
+        "mode": "load"
+      },
+      {
+        "id": "leg-curl",
+        "name": "Leg curl seduto",
+        "sets": 3,
+        "reps": "10-12",
+        "rir": [
+          2,
+          1,
+          1
+        ],
+        "rest": "90-120 s",
+        "tip": "Conserva gli appoggi e controlla tutta la discesa.",
+        "mode": "load"
+      },
+      {
+        "id": "incline-curl",
+        "name": "Curl con manubri su panca inclinata",
+        "sets": 3,
+        "reps": "10-12",
+        "rir": [
+          2,
+          1,
+          1
+        ],
+        "rest": "90-120 s",
+        "tip": "Evita slanci. Registra il peso di un singolo manubrio.",
+        "mode": "load"
+      },
+      {
+        "id": "vulken-b",
+        "name": "Pushdown con Vulken",
+        "sets": 2,
+        "reps": "10-12",
+        "rir": [
+          1,
+          1
+        ],
+        "rest": "90 s",
+        "tip": "Gomiti relativamente stabili e traiettoria naturale.",
+        "mode": "load"
+      }
+    ]
+  },
+  "C": {
+    "label": "C · Venerdì",
+    "title": "Rumeno, glutei e parte alta",
+    "exercises": [
+      {
+        "id": "rdl",
+        "name": "Stacco rumeno con bilanciere",
+        "sets": 3,
+        "reps": "8-10",
+        "rir": [
+          2,
+          2,
+          2
+        ],
+        "rest": "3 min",
+        "tip": "Bilanciere vicino alle gambe. La discesa termina dove mantieni controllo di tronco e bacino.",
+        "mode": "load"
+      },
+      {
+        "id": "prone-lat",
+        "name": "Lat machine presa prona",
+        "sets": 2,
+        "reps": "10-12",
+        "rir": [
+          2,
+          1
+        ],
+        "rest": "2 min",
+        "tip": "Mantieni assetto e ROM ripetibili, senza slanci del busto.",
+        "mode": "load"
+      },
+      {
+        "id": "kickback",
+        "name": "Cable kickback",
+        "sets": 2,
+        "reps": "12-14 per lato",
+        "rir": [
+          1,
+          1
+        ],
+        "rest": "60-90 s stesso lato",
+        "tip": "Due serie per ciascun lato. Bacino stabile. Nel campo reps usa il valore comune; eventuali differenze tra lati vanno nelle note.",
+        "mode": "load"
+      },
+      {
+        "id": "pulley",
+        "name": "Pulley con triangolo · gran dorsale",
+        "sets": 3,
+        "reps": "10-12",
+        "rir": [
+          2,
+          1,
+          1
+        ],
+        "rest": "2 min",
+        "tip": "Gomiti vicini al busto, tirata verso l’addome. Lieve arrotondamento toracico controllato; non forzare la flessione lombare.",
+        "mode": "load"
+      },
+      {
+        "id": "chest-press",
+        "name": "Chest press",
+        "sets": 3,
+        "reps": "10-12",
+        "rir": [
+          2,
+          1,
+          1
+        ],
+        "rest": "2 min",
+        "tip": "Mantieni regolazioni e ROM costanti.",
+        "mode": "load"
+      },
+      {
+        "id": "abductor",
+        "name": "Abductor machine",
+        "sets": 3,
+        "reps": "12-14",
+        "rir": [
+          2,
+          1,
+          1
+        ],
+        "rest": "90 s",
+        "tip": "Muovi l’anca senza oscillare con il busto.",
+        "mode": "load"
+      },
+      {
+        "id": "cable-lateral",
+        "name": "Alzate laterali al cavo",
+        "sets": 3,
+        "reps": "12-14",
+        "rir": [
+          2,
+          1,
+          1
+        ],
+        "rest": "90 s",
+        "tip": "Controlla la discesa e usa incrementi piccoli.",
+        "mode": "load"
+      },
+      {
+        "id": "vulken-c",
+        "name": "Pushdown con Vulken",
+        "sets": 2,
+        "reps": "10-12",
+        "rir": [
+          1,
+          1
+        ],
+        "rest": "90 s",
+        "tip": "Mantieni lo stesso assetto utilizzato il mercoledì.",
+        "mode": "load"
+      }
+    ]
+  }
+};
+const DAYS=["A","B","C"], $=id=>document.getElementById(id);
+let persistent=true, pendingAction=null, returnFocus=null, swRegistration=null;
+function blank(){return {schemaVersion:SCHEMA_VERSION,planId:PLAN_ID,updatedAt:null,currentWeek:1,currentDay:"A",weeks:{}};}
+function warnStorage(message){persistent=false;$("storageWarning").hidden=false;$("storageWarning").textContent=message;$("status").textContent="Non salvato sul dispositivo";$("status").style.color="var(--red)";}
+function validateIncoming(raw){
+ if(!raw || raw.planId!==PLAN_ID || raw.schemaVersion!==SCHEMA_VERSION || !raw.weeks || typeof raw.weeks!=="object" || Array.isArray(raw.weeks)) throw new Error("Backup incompatibile: serve un backup del percorso Irene 8 settimane v2.");
+ const clean=blank();clean.updatedAt=typeof raw.updatedAt==="string"?raw.updatedAt:null;clean.currentWeek=Number.isInteger(raw.currentWeek)&&raw.currentWeek>=1&&raw.currentWeek<=8?raw.currentWeek:1;clean.currentDay=DAYS.includes(raw.currentDay)?raw.currentDay:"A";
+ for(const [wk,week] of Object.entries(raw.weeks)){
+  if(!/^[1-8]$/.test(wk)||!week||typeof week!=="object"||Array.isArray(week))throw new Error("Settimana non valida nel backup.");
+  clean.weeks[wk]={};
+  for(const [day,session] of Object.entries(week)){
+   if(!DAYS.includes(day)||!session||typeof session!=="object"||Array.isArray(session))throw new Error("Seduta non valida nel backup.");
+   const target={date:"",exercises:{}};clean.weeks[wk][day]=target;
+   if(session.date){if(!/^\d{4}-\d{2}-\d{2}$/.test(session.date))throw new Error("Data non valida.");target.date=session.date;}
+   if(!session.exercises||typeof session.exercises!=="object"||Array.isArray(session.exercises))throw new Error("Esercizi non validi.");
+   for(const [id,entry] of Object.entries(session.exercises)){
+    const def=PLAN[day].exercises.find(e=>e.id===id);if(!def)throw new Error("Esercizio non compatibile con la scheda.");
+    if(!entry||typeof entry!=="object"||Array.isArray(entry))throw new Error("Dati esercizio non validi.");
+    const val={order:"",note:"",sets:{}};target.exercises[id]=val;
+    if(entry.order!==undefined&&entry.order!==""){if(!/^(?:[1-9]|[12]\d|30)$/.test(String(entry.order)))throw new Error("Ordine non valido.");val.order=String(entry.order);}
+    if(entry.note!==undefined){if(typeof entry.note!=="string"||entry.note.length>10000)throw new Error("Nota non valida.");val.note=entry.note;}
+    if(!entry.sets||typeof entry.sets!=="object"||Array.isArray(entry.sets))throw new Error("Serie non valide.");
+    for(const [idx,set] of Object.entries(entry.sets)){
+     if(!/^\d+$/.test(idx)||Number(idx)>=def.sets||!set||typeof set!=="object"||Array.isArray(set))throw new Error("Serie fuori scheda.");
+     val.sets[idx]={};
+     for(const field of ["weight","reps","rir"]){
+      const v=set[field];if(v===undefined||v===""){val.sets[idx][field]="";continue;}
+      const s=String(v),n=Number(s.replace(",","."));
+      if(!/^\d+(?:[.,]\d{1,3})?$/.test(s)||!Number.isFinite(n)||n<0||n>(field==="weight"?2000:field==="reps"?200:10)||(field==="reps"&&!Number.isInteger(n)))throw new Error("Valore non valido nelle serie.");
+      val.sets[idx][field]=s;
+     }
     }
-    if(weekHasData) text += weekText;
+   }
   }
-  if(!text.includes("=== SETTIMANA")) text += "\nNessun dato registrato.";
-  return text;
+ }
+ return clean;
 }
-
-function openSummary(){
-  summaryText.value = buildSummary();
-  summaryModal.style.display = "flex";
+function load(){
+ try{const raw=localStorage.getItem(STORAGE_KEY);if(raw)return validateIncoming(JSON.parse(raw));localStorage.removeItem(LEGACY_KEY);return blank();}
+ catch(e){warnStorage("Impossibile leggere i dati locali. I dati esistenti non vengono sovrascritti automaticamente. Puoi lavorare temporaneamente, esportare un backup e verificare lo spazio o le impostazioni di Safari.");return blank();}
 }
-
-async function copySummary(){
-  const text = summaryText.value || buildSummary();
-  try{
-    await navigator.clipboard.writeText(text);
-    statusEl.textContent = "Riepilogo copiato";
-  }catch(err){
-    summaryText.focus();
-    summaryText.select();
-    statusEl.textContent = "Selezionato: usa Copia";
-  }
+let state=load();
+function status(message){if(persistent){$("status").style.color="";$("status").textContent=message;}}
+function save(){state.updatedAt=new Date().toISOString();if(!persistent)return;try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));status("Salvato · "+new Date().toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"}));}catch(e){warnStorage("Safari non riesce a salvare sul dispositivo. Le modifiche restano solo in questa pagina: esporta subito un backup JSON dal menu ⋮ prima di chiuderla.");}}
+function session(w=state.currentWeek,d=state.currentDay){if(!state.weeks[w])state.weeks[w]={};if(!state.weeks[w][d])state.weeks[w][d]={date:"",exercises:{}};return state.weeks[w][d];}
+function entry(id){const s=session();if(!s.exercises[id])s.exercises[id]={order:"",note:"",sets:{}};return s.exercises[id];}
+function el(tag,cls,txt){const e=document.createElement(tag);if(cls)e.className=cls;if(txt!==undefined)e.textContent=txt;return e;}
+function present(s){return s!==undefined&&s!==null&&s!=="";}
+function setLine(s,mode){const v=x=>present(x)?x:"?";return (mode==="assistance"?"assistenza ":"")+v(s.weight)+" kg × "+v(s.reps)+" @RIR "+v(s.rir);}
+function updateOrderWarnings(){const counts={};for(const v of Object.values(session().exercises)){if(v.order)counts[v.order]=(counts[v.order]||0)+1;}document.querySelectorAll(".order-input").forEach(input=>{const msg=input.parentElement.querySelector(".order-msg");const v=input.value;msg.textContent=v&&counts[v]>1?"Numero già usato in questa seduta":"";input.setAttribute("aria-invalid",v&&counts[v]>1?"true":"false");});}
+function numericInput(value,field,label,onChange){
+ const input=el("input");input.type="text";input.inputMode=field==="reps"?"numeric":"decimal";input.autocomplete="off";input.spellcheck=false;input.value=value??"";input.placeholder=field==="weight"?"kg":field==="reps"?"reps":"RIR";input.setAttribute("aria-label",label);
+ input.addEventListener("input",()=>{const raw=input.value.trim();if(raw===""){input.setCustomValidity("");onChange("");return;}const n=Number(raw.replace(",","."));const max=field==="weight"?2000:field==="reps"?200:10;if(!/^\d+(?:[.,]\d{1,3})?$/.test(raw)||!Number.isFinite(n)||n<0||n>max||(field==="reps"&&!Number.isInteger(n))){input.setCustomValidity("Inserisci un numero valido"+(field==="rir"?" da 0 a 10":""));return;}input.setCustomValidity("");onChange(raw);});
+ input.addEventListener("blur",()=>{if(!input.checkValidity()){input.reportValidity();input.value=valueFromState();input.setCustomValidity("");}});
+ function valueFromState(){const day=PLAN[state.currentDay].exercises;for(const ex of day){const inputs=document.querySelector('[data-exercise="'+ex.id+'"]');if(inputs&&inputs.contains(input)){const idx=Number(input.dataset.setIndex);return entry(ex.id).sets[idx]?.[field]??"";}}return "";}
+ return input;
 }
-
-async function shareSummary(){
-  const text = summaryText.value || buildSummary();
-  try{
-    if(navigator.share){
-      await navigator.share({title:"Bodybuilding Tracker - Progressi", text});
-      statusEl.textContent = "Condiviso";
-      return;
-    }
-  }catch(err){
-    if(err && err.name === "AbortError") return;
-  }
-  await copySummary();
+function render(){
+ const day=PLAN[state.currentDay],s=session();$("weekSelect").value=String(state.currentWeek);$("daySelect").value=state.currentDay;$("currentDayTitle").textContent=day.title;$("daySubtitle").textContent="Settimana "+state.currentWeek+" di 8 · "+day.label+" · "+day.exercises.reduce((a,e)=>a+e.sets,0)+" serie";$("sessionDate").value=s.date||"";$("exerciseList").replaceChildren();
+ day.exercises.forEach((ex,index)=>{
+  const saved=entry(ex.id),card=el("section","exercise");card.dataset.exercise=ex.id;const head=el("div","ex-head");const name=el("h3","ex-title");name.append(el("span","plan-index",String(index+1).padStart(2,"0")+" · "),document.createTextNode(ex.name));head.append(name,el("div","meta",ex.sets+" × "+ex.reps+" · RIR "+ex.rir.join(" / ")+" · recupero "+ex.rest));
+  const orderLine=el("div","order-line"),orderLabel=el("label",null,"Ordine effettivo"),order=el("input","order-input");order.id="order-"+ex.id;orderLabel.htmlFor=order.id;order.type="text";order.inputMode="numeric";order.pattern="[0-9]*";order.maxLength=2;order.value=saved.order||"";order.placeholder="—";order.setAttribute("aria-label",ex.name+": ordine effettivo");order.addEventListener("input",()=>{if(order.value===""||/^(?:[1-9]|[12]\d|30)$/.test(order.value)){saved.order=order.value;order.setCustomValidity("");save();updateOrderWarnings();}else{order.setCustomValidity("Usa un intero da 1 a 30");}});order.addEventListener("blur",()=>{if(!order.checkValidity()){order.value=saved.order;order.setCustomValidity("");updateOrderWarnings();}});orderLine.append(orderLabel,order,el("span","order-msg"));head.append(orderLine);card.append(head);
+  const body=el("div","body"),grid=el("div","setgrid");for(const t of ["Serie",ex.mode==="assistance"?"Assistenza kg":"Peso kg","Reps","RIR reale"])grid.append(el("div","th",t));
+  for(let i=0;i<ex.sets;i++){grid.append(el("div","setno",String(i+1)));for(const field of ["weight","reps","rir"]){const input=numericInput(saved.sets[i]?.[field],field,ex.name+", serie "+(i+1)+": "+(field==="weight"?(ex.mode==="assistance"?"assistenza kg":"peso kg"):field),v=>{if(!saved.sets[i])saved.sets[i]={};saved.sets[i][field]=v;save();});input.dataset.setIndex=i;grid.append(input);}}
+  body.append(grid);const label=el("label","note-label","Note e annotazioni"),note=el("textarea");note.id="note-"+ex.id;label.htmlFor=note.id;note.value=saved.note||"";note.maxLength=10000;note.placeholder="Tecnica, regolazioni, sensazioni, motivo del cambio ordine…";note.addEventListener("input",()=>{saved.note=note.value;save();});body.append(label,note);
+  const previous=state.weeks[state.currentWeek-1]?.[state.currentDay]?.exercises[ex.id];
+  if(previous&&(previous.order||previous.note||Object.values(previous.sets).some(v=>Object.values(v).some(present)))){const prev=el("div","previous");prev.append(el("strong",null,"Settimana "+(state.currentWeek-1)+(previous.order?" · ordine "+previous.order:"")+": "));const parts=[];for(let i=0;i<ex.sets;i++){const v=previous.sets[i];if(v&&Object.values(v).some(present))parts.push("S"+(i+1)+" "+setLine(v,ex.mode));}prev.append(document.createTextNode(parts.join(" · ")));if(previous.note)prev.append(el("div",null,"Note: "+previous.note));body.append(prev);}
+  const tech=el("details","tech");tech.append(el("summary",null,"Indicazioni e progressione"),el("p",null,ex.tip));body.append(tech);card.append(body);$("exerciseList").append(card);
+ });updateOrderWarnings();
 }
-
-function askResetCurrentWeek(){
-  confirmText.textContent = `Vuoi cancellare tutti i dati della settimana ${currentWeek}? L'operazione non può essere annullata.`;
-  confirmModal.style.display = "flex";
+function closeMenu(){const wasOpen=!$("actionsMenu").hidden;$("actionsMenu").hidden=true;$("menuToggle").setAttribute("aria-expanded","false");return wasOpen;}
+function openModal(id){closeMenu();returnFocus=document.activeElement;$(id).hidden=false;document.body.classList.add("modal-open");const first=$(id).querySelector("button,textarea");first?.focus();}
+function closeModal(id){$(id).hidden=true;document.body.classList.remove("modal-open");if(id==="confirmModal")pendingAction=null;$("menuToggle").focus();}
+function ask(text,action){pendingAction=action;$("confirmText").textContent=text;openModal("confirmModal");}
+$("menuToggle").addEventListener("click",()=>{const open=$("actionsMenu").hidden;$("actionsMenu").hidden=!open;$("menuToggle").setAttribute("aria-expanded",String(open));});
+document.addEventListener("click",e=>{if(!e.target.closest(".menu-anchor"))closeMenu();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){if(closeMenu())$("menuToggle").focus();for(const id of ["summaryModal","confirmModal","guideModal"])if(!$(id).hidden)closeModal(id);}if(e.key==="Tab"){const m=["summaryModal","confirmModal","guideModal"].map($).find(x=>!x.hidden);if(!m)return;const items=[...m.querySelectorAll("button,textarea,input")].filter(x=>!x.disabled);const first=items[0],last=items[items.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}});
+for(const id of ["summaryModal","confirmModal","guideModal"])$(id).addEventListener("click",e=>{if(e.target===$(id))closeModal(id);});
+$("cancelConfirm").onclick=()=>closeModal("confirmModal");$("confirmAction").onclick=()=>{const action=pendingAction;closeModal("confirmModal");action?.();};$("closeSummary").onclick=()=>closeModal("summaryModal");$("closeGuide").onclick=()=>closeModal("guideModal");$("showGuide").onclick=()=>openModal("guideModal");
+$("weekSelect").onchange=()=>{state.currentWeek=Number($("weekSelect").value);save();render();};$("daySelect").onchange=()=>{state.currentDay=$("daySelect").value;save();render();};$("sessionDate").onchange=()=>{session().date=$("sessionDate").value;save();};
+$("resetWeek").onclick=()=>ask("Cancellare date, ordini, serie e note della settimana "+state.currentWeek+"? Le altre settimane restano intatte. L’operazione non è annullabile.",()=>{delete state.weeks[state.currentWeek];save();render();status("Settimana azzerata");});
+$("resetAll").onclick=()=>ask("Cancellare tutti i dati delle 8 settimane e ripartire da zero? Esporta prima un backup se vuoi conservarli. L’operazione non è annullabile.",()=>{state=blank();if(!persistent){try{localStorage.removeItem(STORAGE_KEY);persistent=true;$("storageWarning").hidden=true;}catch(e){}}save();render();status("Nuovo percorso vuoto · settimana 1");});
+function buildBackup(){return {appVersion:APP_VERSION,planId:PLAN_ID,exportedAt:new Date().toISOString(),plan:PLAN,data:state};}
+function buildSummary(){
+ let text="IRENE · FULL BODY 8 SETTIMANE · v"+APP_VERSION+"\nEsportato: "+new Date().toLocaleString("it-IT")+"\nTrazioni assistite: diminuire i kg di assistenza significa progredire.\n";let any=false;
+ for(let w=1;w<=8;w++){let lines=[];for(const d of DAYS){const s=state.weeks[w]?.[d];if(!s)continue;const entries=PLAN[d].exercises.map((ex,i)=>({ex,i,v:s.exercises[ex.id]})).filter(({v})=>v&&(v.order||v.note||Object.values(v.sets).some(s=>Object.values(s).some(present))));if(!entries.length&&!s.date)continue;entries.sort((a,b)=>(Number(a.v.order)||999)-(Number(b.v.order)||999)||a.i-b.i);let section=PLAN[d].label+(s.date?" · data "+s.date:"")+"\n";for(const {ex,i,v} of entries){section+="- "+ex.name+" | ordine effettivo: "+(v.order||"non indicato")+" | previsto: "+(i+1)+" | target "+ex.sets+" × "+ex.reps+", RIR "+ex.rir.join("/")+"\n";for(let k=0;k<ex.sets;k++){const set=v.sets[k];if(set&&Object.values(set).some(present))section+="  S"+(k+1)+": "+setLine(set,ex.mode)+"\n";}if(v.note)section+="  Note: "+v.note+"\n";}lines.push(section);}if(lines.length){any=true;text+="\n=== SETTIMANA "+w+" ===\n"+lines.join("\n");}}
+ return text+(any?"":"\nNessun dato registrato.");
 }
-
-function resetCurrentWeekConfirmed(){
-  delete store.weeks[currentWeek];
-  saveStore();
-  confirmModal.style.display = "none";
-  renderDay();
-  statusEl.textContent = "Settimana azzerata";
-}
-
-async function importBackup(file){
-  try{
-    const obj = JSON.parse(await file.text());
-    const incoming = obj.data || obj;
-    if(!incoming.weeks) throw new Error("Formato non valido");
-    store = incoming;
-    saveStore();
-    renderDay();
-    statusEl.textContent = "Backup importato";
-  }catch(err){
-    alert("Impossibile importare il backup: " + err.message);
-  }
-}
-
-weekSelect.addEventListener("change", () => { currentWeek = Number(weekSelect.value); renderDay(); });
-daySelect.addEventListener("change", () => { currentDay = daySelect.value; renderDay(); });
-document.getElementById("exportJson").addEventListener("click", exportJSON);
-document.getElementById("exportCsv").addEventListener("click", exportCSV);
-document.getElementById("showSummary").addEventListener("click", openSummary);
-document.getElementById("copySummary").addEventListener("click", copySummary);
-document.getElementById("shareSummary").addEventListener("click", shareSummary);
-document.getElementById("downloadSummary").addEventListener("click", async () => {
-  const text = summaryText.value || buildSummary();
-  if(!(await shareFile("bodybuilding_tracker_riepilogo.txt", text, "text/plain;charset=utf-8"))){
-    downloadFile("bodybuilding_tracker_riepilogo.txt", text, "text/plain;charset=utf-8");
-  }
-});
-document.getElementById("closeSummary").addEventListener("click", () => summaryModal.style.display = "none");
-summaryModal.addEventListener("click", e => { if(e.target === summaryModal) summaryModal.style.display = "none"; });
-
-document.getElementById("resetWeek").addEventListener("click", askResetCurrentWeek);
-document.getElementById("cancelReset").addEventListener("click", () => confirmModal.style.display = "none");
-document.getElementById("confirmReset").addEventListener("click", resetCurrentWeekConfirmed);
-confirmModal.addEventListener("click", e => { if(e.target === confirmModal) confirmModal.style.display = "none"; });
-
-document.getElementById("importBtn").addEventListener("click", () => importFile.click());
-importFile.addEventListener("change", async () => {
-  if(importFile.files && importFile.files[0]){
-    await importBackup(importFile.files[0]);
-    importFile.value = "";
-  }
-});
-
-populateWeeks();
-daySelect.value = currentDay;
-renderDay();
-
-if("serviceWorker" in navigator && location.protocol.startsWith("http")){
-  navigator.serviceWorker.register("./sw.js").catch(() => {});
-}
+function csvCell(v){let s=String(v??"");if(/^[=+\-@\t\r]/.test(s))s="'"+s;return '"'+s.replaceAll('"','""')+'"';}
+function buildCSV(){const rows=[["week","day","date","exercise_id","exercise","planned_order","actual_order","set","weight_kg","weight_kind","reps","rir","note"]];for(let w=1;w<=8;w++)for(const d of DAYS){const s=state.weeks[w]?.[d];if(!s)continue;PLAN[d].exercises.forEach((ex,i)=>{const v=s.exercises[ex.id];if(!v)return;let emitted=false;for(let k=0;k<ex.sets;k++){const set=v.sets[k];if(set&&Object.values(set).some(present)){rows.push([w,d,s.date,ex.id,ex.name,i+1,v.order,k+1,set.weight,ex.mode==="assistance"?"assistance":"load",set.reps,set.rir,v.note]);emitted=true;}}if(!emitted&&(v.order||v.note))rows.push([w,d,s.date,ex.id,ex.name,i+1,v.order,"","",ex.mode==="assistance"?"assistance":"load","","",v.note]);});}return "\uFEFF"+rows.map(r=>r.map(csvCell).join(",")).join("\r\n");}
+function downloadFile(name,text,type){const blob=new Blob([text],{type}),url=URL.createObjectURL(blob),a=el("a");a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);}
+async function shareFile(name,text,type){const file=new File([text],name,{type});if(navigator.share&&navigator.canShare?.({files:[file]})){try{await navigator.share({files:[file],title:name});return;}catch(e){if(e.name==="AbortError")return;}}downloadFile(name,text,type);}
+$("exportJson").onclick=()=>{closeMenu();shareFile("irene_backup_8_settimane_v2.json",JSON.stringify(buildBackup(),null,2),"application/json").catch(e=>status("Esportazione non riuscita"));};
+$("exportCsv").onclick=()=>{closeMenu();shareFile("irene_progressi_v2.csv",buildCSV(),"text/csv;charset=utf-8").catch(e=>status("Esportazione non riuscita"));};
+$("showSummary").onclick=()=>{$("summaryText").value=buildSummary();openModal("summaryModal");};
+$("copySummary").onclick=async()=>{try{await navigator.clipboard.writeText($("summaryText").value);status("Riepilogo copiato");}catch(e){$("summaryText").focus();$("summaryText").select();status("Testo selezionato: usa Copia");}};
+$("shareSummary").onclick=async()=>{if(navigator.share){try{await navigator.share({title:"Irene · Progressi",text:$("summaryText").value});return;}catch(e){if(e.name==="AbortError")return;}}$("copySummary").click();};
+$("downloadSummary").onclick=()=>shareFile("irene_riepilogo_v2.txt",$("summaryText").value,"text/plain;charset=utf-8");
+$("importBtn").onclick=()=>{closeMenu();$("importFile").click();};
+$("importFile").onchange=async()=>{const file=$("importFile").files?.[0];$("importFile").value="";if(!file)return;try{if(file.size>5*1024*1024)throw new Error("File troppo grande (massimo 5 MB).");const parsed=JSON.parse(await file.text()),incoming=validateIncoming(parsed.data||parsed);ask("Importare questo backup? Sostituirà tutti i dati attuali delle 8 settimane.",()=>{state=incoming;save();render();status("Backup importato");});}catch(e){ask("Importazione non riuscita: "+e.message,()=>{});}};
+function connection(){$("connection").textContent=navigator.onLine?"":"Offline";}window.addEventListener("online",connection);window.addEventListener("offline",connection);connection();
+for(let i=1;i<=8;i++){const opt=el("option",null,"Settimana "+i);opt.value=i;$("weekSelect").append(opt);}render();
+if(persistent){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch(e){warnStorage("Salvataggio locale non disponibile. Esporta un backup prima di chiudere la pagina.");}}
+$("updateApp").onclick=async()=>{closeMenu();save();if(!persistent){ask("Prima di aggiornare esporta un backup: il salvataggio locale non è disponibile.",()=>{});return;}if(!navigator.onLine){status("Sei offline: riprova con una connessione");return;}status("Controllo aggiornamenti…");try{const response=await fetch("./index.html",{cache:"no-store"});if(!response.ok)throw new Error("Connessione non riuscita");if(swRegistration){await swRegistration.update();const worker=swRegistration.installing||swRegistration.waiting;if(worker){await new Promise(resolve=>{const timer=setTimeout(resolve,8000);const check=()=>{if(worker.state==="activated"||worker.state==="redundant"){clearTimeout(timer);resolve();}};worker.addEventListener("statechange",check);worker.postMessage({type:"SKIP_WAITING"});check();});}}location.reload();}catch(e){status("Aggiornamento non riuscito: riprova online");}};
+if("serviceWorker"in navigator&&location.protocol.startsWith("http")){const alreadyControlled=!!navigator.serviceWorker.controller;navigator.serviceWorker.addEventListener("controllerchange",()=>{if(alreadyControlled)$("updateNotice").hidden=false;});navigator.serviceWorker.register("./sw.js",{updateViaCache:"none"}).then(r=>{swRegistration=r;r.update().catch(()=>{});}).catch(()=>status("App online · offline non disponibile"));}
+window.addEventListener("pageshow",()=>{if(swRegistration&&navigator.onLine)swRegistration.update().catch(()=>{});});
 </script>
 </body>
 </html>

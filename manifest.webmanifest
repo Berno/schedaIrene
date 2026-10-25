@@ -1,22 +1,13 @@
 {
-  "name": "Bodybuilding Tracker 6 settimane",
-  "short_name": "BB Tracker",
-  "start_url": "./",
-  "scope": "./",
-  "display": "standalone",
-  "background_color": "#f5f6f8",
-  "theme_color": "#1769e0",
-  "description": "Tracker locale per peso, ripetizioni e RIR.",
-  "icons": [
-    {
-      "src": "icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
+ "name":"Irene · Full body 8 settimane",
+ "short_name":"Irene BB",
+ "id":"./",
+ "start_url":"./",
+ "scope":"./",
+ "display":"standalone",
+ "background_color":"#f4f6f9",
+ "theme_color":"#1769e0",
+ "description":"Scheda full body su 8 settimane: carichi, assistenza, ripetizioni, RIR, ordine e note.",
+ "lang":"it",
+ "icons":[{"src":"icon-192.png","sizes":"192x192","type":"image/png"},{"src":"icon-512.png","sizes":"512x512","type":"image/png"}]
 }
