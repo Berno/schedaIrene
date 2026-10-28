@@ -1,63 +1,55 @@
-IRENE - FULL BODY 8 SETTIMANE - v2.0.0 - 25 ottobre 2026
+IRENE - FULL BODY 8 SETTIMANE - v2.1.0 - 28 ottobre 2026
 
-FILE DA SOSTITUIRE NEL REPOSITORY GITHUB PAGES
-1. index.html: scheda confermata, 8 settimane, menu a tre puntini,
-   ordine effettivo per esercizio, salvataggi ed esportazioni aggiornati.
-2. sw.js: nuova versione della cache, navigazione online aggiornata e offline.
-3. manifest.webmanifest: nome e descrizione del percorso su 8 settimane.
-4. README.txt: istruzioni aggiornate (non necessario al funzionamento).
+MODIFICHE ALLA SCHEDA
+- Giorno A: estensioni tricipiti sopra la testa da 2 a 3 serie,
+  10-12 ripetizioni, RIR 2 / 1 / 1.
+- Giorno B: pushdown Vulken da 2 a 3 serie,
+  10-12 ripetizioni, RIR 2 / 1 / 1.
+- Giorno C: lat machine presa prona da 2 a 3 serie,
+  10-12 ripetizioni, RIR 2 / 1 / 1.
+- Curl con manubri su panca inclinata del giorno B confermato.
+Totali: A 21 serie, B 21, C 22; 64 settimanali.
+Tricipiti: 8 serie dirette. Dorso: 15 serie complessive.
+
+FILE DA SOSTITUIRE SU GITHUB PAGES RISPETTO ALLA v2.0.0
+1. index.html: scheda e versione aggiornate.
+2. sw.js: versione cache aggiornata per ricevere la nuova app.
+3. README.txt: queste istruzioni (facoltativo al funzionamento).
 
 INVARIATI
-icon-192.png e icon-512.png sono identici al pacchetto precedente.
-Sono inclusi per consentire anche un'installazione completa.
+manifest.webmanifest, icon-192.png e icon-512.png sono identici alla v2.0.0.
+Sono comunque inclusi nello ZIP completo.
+Estrai lo ZIP e carica i file nella stessa cartella del precedente index.html,
+senza aggiungere un livello di cartelle. Attendi il deploy GitHub Pages.
 
-CARICAMENTO
-Estrai lo ZIP. Carica i file indicati nella stessa cartella del vecchio
-index.html, senza creare un ulteriore livello di cartelle. Mantieni le icone.
-Attendi la pubblicazione GitHub Pages. Non e' necessario caricare il PDF.
+DATI ESISTENTI: NESSUN RESET
+L'archivio, gli identificativi degli esercizi e le 8 settimane sono gli stessi
+della v2.0.0. Carichi, ripetizioni, RIR, date, ordini e note gia' inseriti restano.
+Le nuove terze serie sono inizialmente vuote: non copiano dati dalle altre.
+I target aggiornati vengono mostrati in tutte le 8 settimane; il numero delle
+serie effettivamente registrate resta quello presente nel diario.
+Anche i backup JSON della v2.0.0 sono compatibili con questa versione.
+Non cancellare i dati di Safari e non usare Azzera per aggiornare.
 
-IPHONE
-Apri l'indirizzo HTTPS del sito in Safari. Controlla nell'header v2.0.0.
-Se vedi ancora la vecchia app, ricarica la pagina; attendi qualche secondo
-e ricarica ancora dopo che il nuovo service worker si e' attivato.
-Una versione gia' v2 dispone di: menu ... > Controlla e aggiorna l'app.
-Poi Condividi > Aggiungi alla schermata Home. Se la usi gia' dalla Home,
-chiudila completamente e riaprila dopo l'aggiornamento.
-Se la vecchia versione persiste, verifica prima la versione in Safari e
-che GitHub Pages abbia terminato il deploy. Solo come ultima soluzione,
-prima di iniziare il nuovo percorso, rimuovi i dati del sito da Safari:
-questo elimina i salvataggi locali di quel sito.
-Il primo caricamento deve essere online; poi l'app funziona anche offline.
+AGGIORNAMENTO SU IPHONE
+Prima dell'aggiornamento, menu ... > Backup JSON e Salva su File.
+Dopo il caricamento su GitHub e il deploy:
+1. Apri l'app con la stessa modalita' abituale (Safari oppure icona Home).
+2. Con connessione attiva, menu ... > Controlla e aggiorna l'app.
+3. Verifica che nell'header compaia v2.1.0 e che i dati siano presenti.
+Se compare ancora v2.0.0, attendi qualche secondo, chiudi completamente
+l'app e riaprila; ripeti il controllo aggiornamenti. Non disinstallare
+l'app e non cancellare i dati del sito per forzare l'aggiornamento.
+Safari e l'app Home possono avere archivi distinti: usa lo stesso accesso.
 
-NUOVO PERCORSO DA ZERO
-La versione 2 usa un archivio nuovo, inizialmente vuoto. Al primo avvio
-del nuovo percorso elimina la vecchia chiave bodybuildingTrackerFemale6W_v1.
-Non cancella altri dati o altri siti. Gli aggiornamenti e le riaperture
-successive NON azzerano le nuove annotazioni.
-I backup della vecchia scheda vengono rifiutati per evitare dati associati
-agli esercizi sbagliati. Importa solo backup del percorso v2 da 8 settimane.
-
-REGISTRAZIONE
-Seleziona settimana, seduta e data. In ogni box annota l'ordine effettivo
-(1, 2, 3...), poi peso/assistenza, ripetizioni, RIR reale e note.
-Il numero non riordina la schermata. I duplicati sono segnalati.
+USO
+Seleziona settimana, seduta e data. Ogni box comprende ordine effettivo,
+peso/assistenza, ripetizioni, RIR reale e note. L'ordine non riordina la pagina.
 Nelle trazioni assistite registra i kg di AIUTO: diminuirli e' la progressione.
-Per gli esercizi unilaterali, annota nelle note differenze tra i lati.
-I dati della settimana precedente sono visibili se presenti.
+Backup JSON, CSV, riepilogo e guida restano nel menu a tre puntini.
+I dati si salvano sul dispositivo in uso; conserva backup periodici.
+L'app rimane utilizzabile offline dopo il primo caricamento online.
 
-MENU ...
-Backup JSON: conserva tutti i dati e permette di ripristinarli su v2.
-CSV: comprende data, ordine previsto/effettivo, tipo di peso, serie e note.
-Riepilogo: testo completo da copiare o condividere per le valutazioni.
-Importa backup: sostituisce i dati correnti dopo conferma.
-Guida e progressioni: istruzioni consultabili anche offline.
-Azzera settimana / tutte le 8 settimane: chiedono conferma.
-
-DATI E BACKUP
-Salvataggio automatico nel browser/dispositivo in uso; nessun account o cloud.
-Safari e l'app Home possono avere archivi distinti: usa sempre lo stesso
-accesso e conserva backup JSON periodici tramite Condividi > Salva su File.
-Non usare navigazione privata. Cancellare i dati del sito puo' rimuovere
-lo storico. Un messaggio evidenzia eventuali problemi di salvataggio.
-
-Questo pacchetto non pubblica nulla: i file vanno caricati sul repository.
+PDF
+Questo aggiornamento modifica solo l'app. Il precedente PDF v2.0.0 resta
+la versione antecedente agli aumenti di serie sopra elencati.

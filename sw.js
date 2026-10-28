@@ -1,5 +1,5 @@
 "use strict";
-const VERSION="2.0.0";
+const VERSION="2.1.0";
 const PREFIX="irene-bb-"+encodeURIComponent(new URL(self.registration.scope).pathname)+"-";
 const CACHE=PREFIX+VERSION;
 const ASSETS=["./index.html","./manifest.webmanifest","./icon-192.png","./icon-512.png"];

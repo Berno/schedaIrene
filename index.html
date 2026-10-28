@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1769e0">
-<meta name="app-version" content="2.0.0">
+<meta name="app-version" content="2.1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Irene BB">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-192.png">
-<title>Irene · Full body 8 settimane · v2.0.0</title>
+<title>Irene · Full body 8 settimane · v2.1.0</title>
 <style>
 :root{--bg:#f4f6f9;--card:#fff;--ink:#172b3a;--muted:#536779;--line:#d8e1e9;--blue:#1769e0;--soft:#edf4ff;--red:#b42318;--green:#087443;--amber:#8b5600}
 *{box-sizing:border-box}html{background:var(--bg);color:var(--ink)}body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding-bottom:env(safe-area-inset-bottom)}
@@ -24,7 +24,7 @@ button,input,select,textarea{font:inherit}button,select{touch-action:manipulatio
 </head>
 <body>
 <header><div class="wrap">
- <div class="topline"><div class="brand"><h1>Irene · Full body</h1><span class="version">v2.0.0</span></div>
+ <div class="topline"><div class="brand"><h1>Irene · Full body</h1><span class="version">v2.1.0</span></div>
  <div class="menu-anchor"><button id="menuToggle" class="dots" type="button" aria-label="Apri menu azioni" aria-expanded="false" aria-controls="actionsMenu">⋮</button>
  <nav id="actionsMenu" class="menu" aria-label="Azioni" hidden>
   <button id="exportJson" type="button">Backup JSON</button><button id="exportCsv" type="button">Esporta CSV</button><button id="showSummary" type="button">Riepilogo da condividere</button><button id="importBtn" type="button">Importa backup</button><hr>
@@ -44,7 +44,8 @@ button,input,select,textarea{font:inherit}button,select{touch-action:manipulatio
 <input id="importFile" type="file" accept=".json,application/json" hidden>
 <div id="summaryModal" class="backdrop" hidden><section class="modal" role="dialog" aria-modal="true" aria-labelledby="summaryTitle"><h2 id="summaryTitle">Riepilogo delle 8 settimane</h2><p class="footnote">Include date, ordine effettivo, assistenza, carichi, ripetizioni, RIR e note.</p><textarea id="summaryText" aria-label="Riepilogo da condividere" readonly></textarea><div class="modal-actions"><button id="closeSummary" type="button">Chiudi</button><button id="copySummary" type="button">Copia</button><button id="downloadSummary" type="button">File TXT</button><button id="shareSummary" class="primary" type="button">Condividi</button></div></section></div>
 <div id="confirmModal" class="backdrop" hidden><section class="modal" role="dialog" aria-modal="true" aria-labelledby="confirmTitle"><h2 id="confirmTitle">Conferma</h2><p id="confirmText"></p><div class="modal-actions"><button id="cancelConfirm" type="button">Annulla</button><button id="confirmAction" class="danger" type="button">Conferma</button></div></section></div>
-<div id="guideModal" class="backdrop" hidden><section class="modal guide" role="dialog" aria-modal="true" aria-labelledby="guideTitle"><h2 id="guideTitle">Irene · v2.0.0 · 8 settimane</h2>
+<div id="guideModal" class="backdrop" hidden><section class="modal guide" role="dialog" aria-modal="true" aria-labelledby="guideTitle"><h2 id="guideTitle">Irene · v2.1.0 · 8 settimane</h2>
+ <h3>Aggiornamento 28 ottobre 2026</h3><p>Lat prona del giorno C e tricipiti dei giorni A e B a 3 serie. Totale: 21 / 21 / 22 serie, con 8 serie dirette per i tricipiti. Curl inclinato del giorno B confermato. I dati già registrati restano conservati; le serie aggiunte partono vuote.</p>
  <h3>Serie, RIR e carichi</h3><p>Le serie di riscaldamento non vanno registrate come serie allenanti. RIR 2 significa che restano due ripetizioni pulite con lo stesso ROM. Registra il RIR reale, anche se diverso dal target. Non è richiesto il cedimento.</p>
  <h3>Come progredire</h3><p>Quando tutte le serie raggiungono il limite alto del range con tecnica e RIR previsti, prova il minimo incremento pratico nella seduta successiva. Se il salto è troppo grande, mantieni il peso e annotalo. Nei manubri registra il peso di uno; nei bilancieri il totale con barra. Annota le convenzioni di macchine e Smith.</p>
  <h3>Trazioni assistite</h3><p>Più kg selezionati = più aiuto. Arrivata a 10/10/10 con i RIR previsti, <strong>riduci l’assistenza</strong>. Registra i kg di assistenza: non sottrarli al peso corporeo. Usa la stessa macchina e una presa confortevole.</p>
@@ -55,7 +56,7 @@ button,input,select,textarea{font:inherit}button,select{touch-action:manipulatio
 </section></div>
 <script>
 "use strict";
-const APP_VERSION="2.0.0", PLAN_ID="irene-fullbody-8w-v2", SCHEMA_VERSION=2, TOTAL_WEEKS=8;
+const APP_VERSION="2.1.0", PLAN_ID="irene-fullbody-8w-v2", SCHEMA_VERSION=2, TOTAL_WEEKS=8;
 const STORAGE_KEY="bodybuildingTrackerIrene8W_v2", LEGACY_KEY="bodybuildingTrackerFemale6W_v1";
 const PLAN={
   "A": {
@@ -149,9 +150,10 @@ const PLAN={
       {
         "id": "overhead-triceps",
         "name": "Estensioni tricipiti sopra la testa al cavo",
-        "sets": 2,
+        "sets": 3,
         "reps": "10-12",
         "rir": [
+          2,
           1,
           1
         ],
@@ -252,9 +254,10 @@ const PLAN={
       {
         "id": "vulken-b",
         "name": "Pushdown con Vulken",
-        "sets": 2,
+        "sets": 3,
         "reps": "10-12",
         "rir": [
+          2,
           1,
           1
         ],
@@ -285,10 +288,11 @@ const PLAN={
       {
         "id": "prone-lat",
         "name": "Lat machine presa prona",
-        "sets": 2,
+        "sets": 3,
         "reps": "10-12",
         "rir": [
           2,
+          1,
           1
         ],
         "rest": "2 min",
