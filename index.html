@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1769e0">
-<meta name="app-version" content="2.1.0">
+<meta name="app-version" content="2.2.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Irene BB">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-192.png">
-<title>Irene · Full body 8 settimane · v2.1.0</title>
+<title>Irene · Full body 8 settimane · v2.2.0</title>
 <style>
 :root{--bg:#f4f6f9;--card:#fff;--ink:#172b3a;--muted:#536779;--line:#d8e1e9;--blue:#1769e0;--soft:#edf4ff;--red:#b42318;--green:#087443;--amber:#8b5600}
 *{box-sizing:border-box}html{background:var(--bg);color:var(--ink)}body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding-bottom:env(safe-area-inset-bottom)}
@@ -24,7 +24,7 @@ button,input,select,textarea{font:inherit}button,select{touch-action:manipulatio
 </head>
 <body>
 <header><div class="wrap">
- <div class="topline"><div class="brand"><h1>Irene · Full body</h1><span class="version">v2.1.0</span></div>
+ <div class="topline"><div class="brand"><h1>Irene · Full body</h1><span class="version">v2.2.0</span></div>
  <div class="menu-anchor"><button id="menuToggle" class="dots" type="button" aria-label="Apri menu azioni" aria-expanded="false" aria-controls="actionsMenu">⋮</button>
  <nav id="actionsMenu" class="menu" aria-label="Azioni" hidden>
   <button id="exportJson" type="button">Backup JSON</button><button id="exportCsv" type="button">Esporta CSV</button><button id="showSummary" type="button">Riepilogo da condividere</button><button id="importBtn" type="button">Importa backup</button><hr>
@@ -44,8 +44,8 @@ button,input,select,textarea{font:inherit}button,select{touch-action:manipulatio
 <input id="importFile" type="file" accept=".json,application/json" hidden>
 <div id="summaryModal" class="backdrop" hidden><section class="modal" role="dialog" aria-modal="true" aria-labelledby="summaryTitle"><h2 id="summaryTitle">Riepilogo delle 8 settimane</h2><p class="footnote">Include date, ordine effettivo, assistenza, carichi, ripetizioni, RIR e note.</p><textarea id="summaryText" aria-label="Riepilogo da condividere" readonly></textarea><div class="modal-actions"><button id="closeSummary" type="button">Chiudi</button><button id="copySummary" type="button">Copia</button><button id="downloadSummary" type="button">File TXT</button><button id="shareSummary" class="primary" type="button">Condividi</button></div></section></div>
 <div id="confirmModal" class="backdrop" hidden><section class="modal" role="dialog" aria-modal="true" aria-labelledby="confirmTitle"><h2 id="confirmTitle">Conferma</h2><p id="confirmText"></p><div class="modal-actions"><button id="cancelConfirm" type="button">Annulla</button><button id="confirmAction" class="danger" type="button">Conferma</button></div></section></div>
-<div id="guideModal" class="backdrop" hidden><section class="modal guide" role="dialog" aria-modal="true" aria-labelledby="guideTitle"><h2 id="guideTitle">Irene · v2.1.0 · 8 settimane</h2>
- <h3>Aggiornamento 28 ottobre 2026</h3><p>Lat prona del giorno C e tricipiti dei giorni A e B a 3 serie. Totale: 21 / 21 / 22 serie, con 8 serie dirette per i tricipiti. Curl inclinato del giorno B confermato. I dati già registrati restano conservati; le serie aggiunte partono vuote.</p>
+<div id="guideModal" class="backdrop" hidden><section class="modal guide" role="dialog" aria-modal="true" aria-labelledby="guideTitle"><h2 id="guideTitle">Irene · v2.2.0 · 8 settimane</h2>
+ <h3>Aggiornamento 8 novembre 2026</h3><p>Aperture inverse ai cavi in A; affondi con piede anteriore rialzato, shoulder press con manubri e hyperextension in B. Totali: 23 / 24 / 22 serie. Pressa e shoulder press alla Smith restano consultabili nello storico della seduta B, se registrate.</p>
  <h3>Serie, RIR e carichi</h3><p>Le serie di riscaldamento non vanno registrate come serie allenanti. RIR 2 significa che restano due ripetizioni pulite con lo stesso ROM. Registra il RIR reale, anche se diverso dal target. Non è richiesto il cedimento.</p>
  <h3>Come progredire</h3><p>Quando tutte le serie raggiungono il limite alto del range con tecnica e RIR previsti, prova il minimo incremento pratico nella seduta successiva. Se il salto è troppo grande, mantieni il peso e annotalo. Nei manubri registra il peso di uno; nei bilancieri il totale con barra. Annota le convenzioni di macchine e Smith.</p>
  <h3>Trazioni assistite</h3><p>Più kg selezionati = più aiuto. Arrivata a 10/10/10 con i RIR previsti, <strong>riduci l’assistenza</strong>. Registra i kg di assistenza: non sottrarli al peso corporeo. Usa la stessa macchina e una presa confortevole.</p>
@@ -56,7 +56,7 @@ button,input,select,textarea{font:inherit}button,select{touch-action:manipulatio
 </section></div>
 <script>
 "use strict";
-const APP_VERSION="2.1.0", PLAN_ID="irene-fullbody-8w-v2", SCHEMA_VERSION=2, TOTAL_WEEKS=8;
+const APP_VERSION="2.2.0", PLAN_ID="irene-fullbody-8w-v2", SCHEMA_VERSION=2, TOTAL_WEEKS=8;
 const STORAGE_KEY="bodybuildingTrackerIrene8W_v2", LEGACY_KEY="bodybuildingTrackerFemale6W_v1";
 const PLAN={
   "A": {
@@ -134,6 +134,19 @@ const PLAN={
         "mode": "load"
       },
       {
+        "id": "rear-delt-cable",
+        "name": "Aperture inverse ai cavi",
+        "sets": 2,
+        "reps": "12-14",
+        "rir": [
+          2,
+          1
+        ],
+        "rest": "90 s",
+        "tip": "Deltoidi posteriori. Gomiti leggermente flessi e busto stabile.",
+        "mode": "load"
+      },
+      {
         "id": "scott",
         "name": "Curl con bilanciere EZ su panca Scott",
         "sets": 3,
@@ -165,7 +178,7 @@ const PLAN={
   },
   "B": {
     "label": "B · Mercoledì",
-    "title": "Dorso, spalle e pressa",
+    "title": "Dorso, spalle e glutei",
     "exercises": [
       {
         "id": "barbell-row",
@@ -182,22 +195,22 @@ const PLAN={
         "mode": "load"
       },
       {
-        "id": "leg-press",
-        "name": "Pressa a 45°",
+        "id": "smith-front-elevated-lunge",
+        "name": "Affondi al multipower con piede anteriore rialzato",
         "sets": 3,
-        "reps": "10-12",
+        "reps": "10-12 per lato",
         "rir": [
           2,
           2,
           1
         ],
-        "rest": "3 min",
-        "tip": "ROM ampio e controllato con bacino appoggiato. Annota la convenzione del carico.",
+        "rest": "2-3 min tra i giri",
+        "tip": "Rialzo sotto il piede anteriore, non sotto quello posteriore. Usa un ROM controllato. Registra il carico e le ripetizioni per lato; annota eventuali differenze nelle note.",
         "mode": "load"
       },
       {
-        "id": "smith-press",
-        "name": "Shoulder press alla Smith machine",
+        "id": "seated-dumbbell-shoulder-press",
+        "name": "Shoulder press con manubri da seduta",
         "sets": 3,
         "reps": "8-10",
         "rir": [
@@ -206,7 +219,7 @@ const PLAN={
           1
         ],
         "rest": "2-3 min",
-        "tip": "Regola panca e schienale per una traiettoria confortevole davanti al viso.",
+        "tip": "Registra il peso di un singolo manubrio.",
         "mode": "load"
       },
       {
@@ -235,6 +248,20 @@ const PLAN={
         ],
         "rest": "90-120 s",
         "tip": "Conserva gli appoggi e controlla tutta la discesa.",
+        "mode": "load"
+      },
+      {
+        "id": "glute-hyperextension",
+        "name": "Hyperextension con focus glutei",
+        "sets": 3,
+        "reps": "12-14",
+        "rir": [
+          2,
+          2,
+          2
+        ],
+        "rest": "90-120 s",
+        "tip": "Muoviti dall’anca e fermati quando busto e gambe sono allineati. Evita di inarcare la schiena.",
         "mode": "load"
       },
       {
@@ -384,6 +411,8 @@ const PLAN={
     ]
   }
 };
+const ARCHIVED={B:[{"id": "leg-press", "name": "Pressa a 45°", "sets": 3, "reps": "10-12", "rir": [2, 2, 1], "rest": "3 min", "tip": "ROM ampio e controllato con bacino appoggiato. Annota la convenzione del carico.", "mode": "load", "originalOrder": 2}, {"id": "smith-press", "name": "Shoulder press alla Smith machine", "sets": 3, "reps": "8-10", "rir": [2, 1, 1], "rest": "2-3 min", "tip": "Regola panca e schienale per una traiettoria confortevole davanti al viso.", "mode": "load", "originalOrder": 3}]};
+const reportExercises=d=>[...PLAN[d].exercises,...(ARCHIVED[d]||[])];
 const DAYS=["A","B","C"], $=id=>document.getElementById(id);
 let persistent=true, pendingAction=null, returnFocus=null, swRegistration=null;
 function blank(){return {schemaVersion:SCHEMA_VERSION,planId:PLAN_ID,updatedAt:null,currentWeek:1,currentDay:"A",weeks:{}};}
@@ -400,7 +429,7 @@ function validateIncoming(raw){
    if(session.date){if(!/^\d{4}-\d{2}-\d{2}$/.test(session.date))throw new Error("Data non valida.");target.date=session.date;}
    if(!session.exercises||typeof session.exercises!=="object"||Array.isArray(session.exercises))throw new Error("Esercizi non validi.");
    for(const [id,entry] of Object.entries(session.exercises)){
-    const def=PLAN[day].exercises.find(e=>e.id===id);if(!def)throw new Error("Esercizio non compatibile con la scheda.");
+    const def=reportExercises(day).find(e=>e.id===id);if(!def)throw new Error("Esercizio non compatibile con la scheda.");
     if(!entry||typeof entry!=="object"||Array.isArray(entry))throw new Error("Dati esercizio non validi.");
     const val={order:"",note:"",sets:{}};target.exercises[id]=val;
     if(entry.order!==undefined&&entry.order!==""){if(!/^(?:[1-9]|[12]\d|30)$/.test(String(entry.order)))throw new Error("Ordine non valido.");val.order=String(entry.order);}
@@ -433,7 +462,7 @@ function entry(id){const s=session();if(!s.exercises[id])s.exercises[id]={order:
 function el(tag,cls,txt){const e=document.createElement(tag);if(cls)e.className=cls;if(txt!==undefined)e.textContent=txt;return e;}
 function present(s){return s!==undefined&&s!==null&&s!=="";}
 function setLine(s,mode){const v=x=>present(x)?x:"?";return (mode==="assistance"?"assistenza ":"")+v(s.weight)+" kg × "+v(s.reps)+" @RIR "+v(s.rir);}
-function updateOrderWarnings(){const counts={};for(const v of Object.values(session().exercises)){if(v.order)counts[v.order]=(counts[v.order]||0)+1;}document.querySelectorAll(".order-input").forEach(input=>{const msg=input.parentElement.querySelector(".order-msg");const v=input.value;msg.textContent=v&&counts[v]>1?"Numero già usato in questa seduta":"";input.setAttribute("aria-invalid",v&&counts[v]>1?"true":"false");});}
+function updateOrderWarnings(){const counts={};for(const ex of PLAN[state.currentDay].exercises){const v=session().exercises[ex.id];if(!v)continue;if(v.order)counts[v.order]=(counts[v.order]||0)+1;}document.querySelectorAll(".order-input").forEach(input=>{const msg=input.parentElement.querySelector(".order-msg");const v=input.value;msg.textContent=v&&counts[v]>1?"Numero già usato in questa seduta":"";input.setAttribute("aria-invalid",v&&counts[v]>1?"true":"false");});}
 function numericInput(value,field,label,onChange){
  const input=el("input");input.type="text";input.inputMode=field==="reps"?"numeric":"decimal";input.autocomplete="off";input.spellcheck=false;input.value=value??"";input.placeholder=field==="weight"?"kg":field==="reps"?"reps":"RIR";input.setAttribute("aria-label",label);
  input.addEventListener("input",()=>{const raw=input.value.trim();if(raw===""){input.setCustomValidity("");onChange("");return;}const n=Number(raw.replace(",","."));const max=field==="weight"?2000:field==="reps"?200:10;if(!/^\d+(?:[.,]\d{1,3})?$/.test(raw)||!Number.isFinite(n)||n<0||n>max||(field==="reps"&&!Number.isInteger(n))){input.setCustomValidity("Inserisci un numero valido"+(field==="rir"?" da 0 a 10":""));return;}input.setCustomValidity("");onChange(raw);});
@@ -452,7 +481,14 @@ function render(){
   const previous=state.weeks[state.currentWeek-1]?.[state.currentDay]?.exercises[ex.id];
   if(previous&&(previous.order||previous.note||Object.values(previous.sets).some(v=>Object.values(v).some(present)))){const prev=el("div","previous");prev.append(el("strong",null,"Settimana "+(state.currentWeek-1)+(previous.order?" · ordine "+previous.order:"")+": "));const parts=[];for(let i=0;i<ex.sets;i++){const v=previous.sets[i];if(v&&Object.values(v).some(present))parts.push("S"+(i+1)+" "+setLine(v,ex.mode));}prev.append(document.createTextNode(parts.join(" · ")));if(previous.note)prev.append(el("div",null,"Note: "+previous.note));body.append(prev);}
   const tech=el("details","tech");tech.append(el("summary",null,"Indicazioni e progressione"),el("p",null,ex.tip));body.append(tech);card.append(body);$("exerciseList").append(card);
- });updateOrderWarnings();
+ });
+ const archived=(ARCHIVED[state.currentDay]||[]).filter(ex=>{const v=s.exercises[ex.id];return v&&(v.order||v.note||Object.values(v.sets).some(row=>Object.values(row).some(present)));});
+ if(archived.length){
+  const history=el("details","exercise body");history.append(el("summary",null,"Storico · esercizi sostituiti"));
+  for(const ex of archived){const v=s.exercises[ex.id];history.append(el("h3","ex-title",ex.name),el("p","sub","Ordine effettivo: "+(v.order||"non indicato")));for(const [i,row] of Object.entries(v.sets)){if(Object.values(row).some(present))history.append(el("p","sub","S"+(Number(i)+1)+": "+setLine(row,ex.mode)));}if(v.note)history.append(el("p","sub",v.note));}
+  $("exerciseList").append(history);
+ }
+ updateOrderWarnings();
 }
 function closeMenu(){const wasOpen=!$("actionsMenu").hidden;$("actionsMenu").hidden=true;$("menuToggle").setAttribute("aria-expanded","false");return wasOpen;}
 function openModal(id){closeMenu();returnFocus=document.activeElement;$(id).hidden=false;document.body.classList.add("modal-open");const first=$(id).querySelector("button,textarea");first?.focus();}
@@ -466,14 +502,14 @@ $("cancelConfirm").onclick=()=>closeModal("confirmModal");$("confirmAction").onc
 $("weekSelect").onchange=()=>{state.currentWeek=Number($("weekSelect").value);save();render();};$("daySelect").onchange=()=>{state.currentDay=$("daySelect").value;save();render();};$("sessionDate").onchange=()=>{session().date=$("sessionDate").value;save();};
 $("resetWeek").onclick=()=>ask("Cancellare date, ordini, serie e note della settimana "+state.currentWeek+"? Le altre settimane restano intatte. L’operazione non è annullabile.",()=>{delete state.weeks[state.currentWeek];save();render();status("Settimana azzerata");});
 $("resetAll").onclick=()=>ask("Cancellare tutti i dati delle 8 settimane e ripartire da zero? Esporta prima un backup se vuoi conservarli. L’operazione non è annullabile.",()=>{state=blank();if(!persistent){try{localStorage.removeItem(STORAGE_KEY);persistent=true;$("storageWarning").hidden=true;}catch(e){}}save();render();status("Nuovo percorso vuoto · settimana 1");});
-function buildBackup(){return {appVersion:APP_VERSION,planId:PLAN_ID,exportedAt:new Date().toISOString(),plan:PLAN,data:state};}
+function buildBackup(){return {appVersion:APP_VERSION,planId:PLAN_ID,exportedAt:new Date().toISOString(),plan:PLAN,archivedExercises:ARCHIVED,data:state};}
 function buildSummary(){
  let text="IRENE · FULL BODY 8 SETTIMANE · v"+APP_VERSION+"\nEsportato: "+new Date().toLocaleString("it-IT")+"\nTrazioni assistite: diminuire i kg di assistenza significa progredire.\n";let any=false;
- for(let w=1;w<=8;w++){let lines=[];for(const d of DAYS){const s=state.weeks[w]?.[d];if(!s)continue;const entries=PLAN[d].exercises.map((ex,i)=>({ex,i,v:s.exercises[ex.id]})).filter(({v})=>v&&(v.order||v.note||Object.values(v.sets).some(s=>Object.values(s).some(present))));if(!entries.length&&!s.date)continue;entries.sort((a,b)=>(Number(a.v.order)||999)-(Number(b.v.order)||999)||a.i-b.i);let section=PLAN[d].label+(s.date?" · data "+s.date:"")+"\n";for(const {ex,i,v} of entries){section+="- "+ex.name+" | ordine effettivo: "+(v.order||"non indicato")+" | previsto: "+(i+1)+" | target "+ex.sets+" × "+ex.reps+", RIR "+ex.rir.join("/")+"\n";for(let k=0;k<ex.sets;k++){const set=v.sets[k];if(set&&Object.values(set).some(present))section+="  S"+(k+1)+": "+setLine(set,ex.mode)+"\n";}if(v.note)section+="  Note: "+v.note+"\n";}lines.push(section);}if(lines.length){any=true;text+="\n=== SETTIMANA "+w+" ===\n"+lines.join("\n");}}
+ for(let w=1;w<=8;w++){let lines=[];for(const d of DAYS){const s=state.weeks[w]?.[d];if(!s)continue;const entries=reportExercises(d).map((ex,i)=>({ex,i,v:s.exercises[ex.id]})).filter(({v})=>v&&(v.order||v.note||Object.values(v.sets).some(s=>Object.values(s).some(present))));if(!entries.length&&!s.date)continue;entries.sort((a,b)=>(Number(a.v.order)||999)-(Number(b.v.order)||999)||a.i-b.i);let section=PLAN[d].label+(s.date?" · data "+s.date:"")+"\n";for(const {ex,i,v} of entries){section+="- "+ex.name+(ex.originalOrder?" [storico]":"")+" | ordine effettivo: "+(v.order||"non indicato")+" | previsto: "+(ex.originalOrder??(i+1))+" | target "+ex.sets+" × "+ex.reps+", RIR "+ex.rir.join("/")+"\n";for(let k=0;k<ex.sets;k++){const set=v.sets[k];if(set&&Object.values(set).some(present))section+="  S"+(k+1)+": "+setLine(set,ex.mode)+"\n";}if(v.note)section+="  Note: "+v.note+"\n";}lines.push(section);}if(lines.length){any=true;text+="\n=== SETTIMANA "+w+" ===\n"+lines.join("\n");}}
  return text+(any?"":"\nNessun dato registrato.");
 }
 function csvCell(v){let s=String(v??"");if(/^[=+\-@\t\r]/.test(s))s="'"+s;return '"'+s.replaceAll('"','""')+'"';}
-function buildCSV(){const rows=[["week","day","date","exercise_id","exercise","planned_order","actual_order","set","weight_kg","weight_kind","reps","rir","note"]];for(let w=1;w<=8;w++)for(const d of DAYS){const s=state.weeks[w]?.[d];if(!s)continue;PLAN[d].exercises.forEach((ex,i)=>{const v=s.exercises[ex.id];if(!v)return;let emitted=false;for(let k=0;k<ex.sets;k++){const set=v.sets[k];if(set&&Object.values(set).some(present)){rows.push([w,d,s.date,ex.id,ex.name,i+1,v.order,k+1,set.weight,ex.mode==="assistance"?"assistance":"load",set.reps,set.rir,v.note]);emitted=true;}}if(!emitted&&(v.order||v.note))rows.push([w,d,s.date,ex.id,ex.name,i+1,v.order,"","",ex.mode==="assistance"?"assistance":"load","","",v.note]);});}return "\uFEFF"+rows.map(r=>r.map(csvCell).join(",")).join("\r\n");}
+function buildCSV(){const rows=[["week","day","date","exercise_id","exercise","planned_order","actual_order","set","weight_kg","weight_kind","reps","rir","note"]];for(let w=1;w<=8;w++)for(const d of DAYS){const s=state.weeks[w]?.[d];if(!s)continue;reportExercises(d).forEach((ex,i)=>{const v=s.exercises[ex.id];if(!v)return;let emitted=false;for(let k=0;k<ex.sets;k++){const set=v.sets[k];if(set&&Object.values(set).some(present)){rows.push([w,d,s.date,ex.id,ex.name,ex.originalOrder??(i+1),v.order,k+1,set.weight,ex.mode==="assistance"?"assistance":"load",set.reps,set.rir,v.note]);emitted=true;}}if(!emitted&&(v.order||v.note))rows.push([w,d,s.date,ex.id,ex.name,ex.originalOrder??(i+1),v.order,"","",ex.mode==="assistance"?"assistance":"load","","",v.note]);});}return "\uFEFF"+rows.map(r=>r.map(csvCell).join(",")).join("\r\n");}
 function downloadFile(name,text,type){const blob=new Blob([text],{type}),url=URL.createObjectURL(blob),a=el("a");a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);}
 async function shareFile(name,text,type){const file=new File([text],name,{type});if(navigator.share&&navigator.canShare?.({files:[file]})){try{await navigator.share({files:[file],title:name});return;}catch(e){if(e.name==="AbortError")return;}}downloadFile(name,text,type);}
 $("exportJson").onclick=()=>{closeMenu();shareFile("irene_backup_8_settimane_v2.json",JSON.stringify(buildBackup(),null,2),"application/json").catch(e=>status("Esportazione non riuscita"));};
